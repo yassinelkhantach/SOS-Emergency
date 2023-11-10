@@ -17,7 +17,7 @@ To use the **SOS Emergency** app, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/SOS-Emergency.git
+   git clone https://github.com/yassinelkhantach/SOS-Emergency.git
    ```
 
 1. Open the project in Android Studio.
