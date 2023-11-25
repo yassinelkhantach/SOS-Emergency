@@ -8,5 +8,10 @@
     <color name="danger">#DC3545</color>
     <color name="info">#0DCAF0</color>
     <color name="warning">#FFC107</color>
-    <color name="gray">#DADADA</color>
+    <color name="gray">#8E8E90</color>
+    <color name="light">#F2F2F6</color>
+    <color name="primary_text">@color/black</color>
+    <color name="secondary_text">@color/gray</color>
+    <color name="background">@color/light</color>
+
 </resources>
