@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,11 +36,22 @@ public class ContactFragment extends Fragment {
         binding = FragmentContactBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // adding the contacts dynamically to the page using recycler view
         setContactsModels();
         RecyclerView recyclerView = binding.getRoot().findViewById(R.id.contactRecyclerView);
         Contact_RecyclerViewAdapter adapter = new Contact_RecyclerViewAdapter(this.getContext(),contactsModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        //add new contact button
+        CardView addNewContactCard = binding.getRoot().findViewById(R.id.addNewContactCard);
+        addNewContactCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+            }
+        });
+
         return root;
     }
 
