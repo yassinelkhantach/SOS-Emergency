@@ -6,44 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.contact.ContactFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/contactRecyclerView">
-        <!-- Title -->
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_contact"
-            android:textColor="@color/black"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <!-- Description -->
-        <TextView
-            android:id="@+id/descriptionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/description_contact"
-            android:textColor="@color/gray"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-
     <!-- RecyclerView -->
 
     <!-- Add More Contacts -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactRecyclerView"
         android:layout_width="0dp"
+        android:paddingTop="10dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/staticCard"
         app:layout_constraintEnd_toEndOf="parent"
