@@ -30,7 +30,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="70"
+            android:layout_weight="60"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -38,7 +38,7 @@
                 android:id="@+id/textContactName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Berhi Othmane"
+                android:text="@string/name_placeholder_contact"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -47,10 +47,25 @@
                 android:id="@+id/textContactPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+212602596700"
+                android:text="@string/phone_placeholder_contact"
                 android:textSize="14sp"
                 />
 
         </LinearLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15"
+            >
+
+            <ImageButton
+                android:layout_width="45dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_remove_24"
+                android:background="@drawable/rounded_corners"
+
+                />
+        </FrameLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
