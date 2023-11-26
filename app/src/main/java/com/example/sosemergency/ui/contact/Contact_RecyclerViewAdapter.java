@@ -17,16 +17,23 @@ import java.util.ArrayList;
 
 
 public class Contact_RecyclerViewAdapter extends RecyclerView.Adapter<Contact_RecyclerViewAdapter.ViewHolder>{
+
+    // Context is needed to inflate the layout
     Context context;
+    // Reference to the ContactFragment to interact with its functions
     ContactFragment contactFragment;
+    // List of ContactModel objects to display in the RecyclerView
     ArrayList<ContactModel> contactModels;
 
+    // Constructor for the RecyclerViewAdapter
     public Contact_RecyclerViewAdapter(Context context, ArrayList<ContactModel> contactModels,ContactFragment contactFragment) {
         this.context = context;
         this.contactModels = contactModels;
         this.contactFragment = contactFragment;
     }
 
+
+    // Inflates the layout for each item in the RecyclerView
     @NonNull
     @Override
     public Contact_RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,28 +42,32 @@ public class Contact_RecyclerViewAdapter extends RecyclerView.Adapter<Contact_Re
         return new Contact_RecyclerViewAdapter.ViewHolder(view);
     }
 
+    // Binds data to the views in each RecyclerView item
     @Override
     public void onBindViewHolder(@NonNull Contact_RecyclerViewAdapter.ViewHolder holder, int position) {
+        // Set the name and phone number in TextViews
         holder.textContactName.setText(contactModels.get(position).getName());
         holder.textContactPhone.setText(contactModels.get(position).getPhone());
-
-
+        // Set onClickListener for the delete button
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 if(position != RecyclerView.NO_POSITION){
+                    // Call the onDeleteContact function in the ContactFragment
                     contactFragment.onDeleteContact(position);
                 }
             }
         });
     }
 
+    // Returns the total number of items in the data set
     @Override
     public int getItemCount() {
         return contactModels.size();
     }
 
+    // ViewHolder class to hold references to the views in each RecyclerView item
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textContactName,textContactPhone;
