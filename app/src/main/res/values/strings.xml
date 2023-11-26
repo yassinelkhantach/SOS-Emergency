@@ -3,7 +3,7 @@
     <string name="title_activity_report">ReportActivity</string>
     <string name="title_home">Home</string>
     <string name="title_report">Report</string>
-    <string name="title_contact">Trusted Contacts</string>
+    <string name="title_contact">Contact</string>
     <string name="title_profile">Profile</string>
     <string name="main_button_text">Go to Home page</string>
     <string name="description_contact">Manage your trusted circle for quick and easy SOS alerts</string>
