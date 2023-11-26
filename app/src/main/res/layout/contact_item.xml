@@ -65,6 +65,8 @@
                 android:layout_gravity="center"
                 android:src="@drawable/baseline_remove_24"
                 android:background="@drawable/rounded_corners"
+                android:foreground="?android:attr/selectableItemBackground"
+
 
                 />
         </FrameLayout>

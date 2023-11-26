@@ -1,6 +1,7 @@
 package com.example.sosemergency.ui.contact;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class ContactFragment extends Fragment {
         // adding the contacts dynamically to the page using recycler view
         setContactsModels();
         RecyclerView recyclerView = binding.getRoot().findViewById(R.id.contactRecyclerView);
-        Contact_RecyclerViewAdapter adapter = new Contact_RecyclerViewAdapter(this.getContext(),contactsModels);
+        Contact_RecyclerViewAdapter adapter = new Contact_RecyclerViewAdapter(this.getContext(),contactsModels,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
@@ -68,5 +69,11 @@ public class ContactFragment extends Fragment {
         for(int i=0;i< contactsName.length;i++){
             contactsModels.add(new ContactModel(contactsName[i],contactsPhone[i]));
         }
+    }
+
+
+    //delete contact
+    public void onDeleteContact(int position){
+        Log.d("Delete contact test", "onDeleteContact: position="+position);
     }
 }
