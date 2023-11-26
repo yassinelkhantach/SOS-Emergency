@@ -236,19 +236,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/report_map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="345dp" />
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            />
 
         <Button
             android:id="@+id/report_send_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/primary"
             android:backgroundTint="@color/primary"
             android:gravity="center"
