@@ -7,6 +7,6 @@
     <style name="Theme.SOSEmergency" parent="Base.Theme.SOSEmergency">
         <item name="colorPrimary">@color/primary</item>
         <item name="android:windowBackground">@color/background</item>
-
+        <item name="android:fontFamily">@font/nunito_font_family</item>
     </style>
 </resources>
