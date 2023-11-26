@@ -25,20 +25,20 @@
             android:layout_height="100dp"
             android:layout_margin="16dp"
             android:src="@drawable/ic_profile_black_24dp" />
-
+        <!-- RelativeLayout for Name and Date of Birth -->
         <RelativeLayout
             android:id="@+id/profileNameDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="16dp">
-
+            <!-- Full Name and Date of Birth LinearLayout -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:orientation="vertical">
-
+                <!-- Full Name TextView-->
                 <TextView
                     android:id="@+id/profileFullName"
                     android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                     android:focusableInTouchMode="false"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
-
+                <!-- Date of birth TextView -->
                 <TextView
                     android:id="@+id/profileBD"
                     android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                     android:textColor="@color/black"
                     android:textSize="17sp" />
             </LinearLayout>
-
+            <!-- Edit icon on the left (Top) -->
             <ImageView
                 android:id="@+id/profileEditIcon"
                 android:layout_width="20dp"
@@ -79,7 +79,7 @@
                 android:src="@drawable/profile_pink_save" />
         </RelativeLayout>
     </LinearLayout>
-
+    <!-- LinearLayout for Age and Blood Type-->
     <LinearLayout
         android:id="@+id/profileAgeBlood"
         android:layout_width="match_parent"
@@ -87,7 +87,7 @@
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/profileName">
-
+        <!-- LinearLayout for Age-->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -101,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="16dp">
-
+                <!-- LinearLayout for Age TextViews-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
-
+                <!-- Calendar icon for Age-->
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="24dp"
@@ -133,7 +133,7 @@
                     android:src="@drawable/profile_pink_calendar" />
             </RelativeLayout>
         </LinearLayout>
-
+        <!-- Space Between two linearLayout (Age - Blood Type) -->
         <Space
             android:layout_width="8dp"
             android:layout_height="match_parent" />
@@ -145,13 +145,13 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/profile_border_background"
             android:orientation="horizontal">
-
+            <!-- RelativeLayout for Blood Type-->
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="16dp">
-
+                <!-- LinearLayout for Blood Type TextViews -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
-
+                <!-- Blood icon for Blood Type-->
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="24dp"
@@ -184,7 +184,7 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-
+    <!-- LinearLayout for Height and Weight -->
     <LinearLayout
         android:id="@+id/smallRectanglesContainer"
         android:layout_width="match_parent"
@@ -200,13 +200,13 @@
             android:layout_marginStart="16dp"
             android:background="@drawable/profile_border_background"
             android:orientation="horizontal">
-
+            <!-- RelativeLayout for Height -->
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="16dp">
-
+                <!-- LinearLayout for Height TextViews-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -229,7 +229,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
-
+                <!-- Height icon -->
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="24dp"
@@ -238,7 +238,7 @@
                     android:src="@drawable/profile_pink_height" />
             </RelativeLayout>
         </LinearLayout>
-
+        <!-- Space Between two linearLayout (Height - Weight) -->
         <Space
             android:layout_width="8dp"
             android:layout_height="match_parent" />
@@ -250,13 +250,13 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/profile_border_background"
             android:orientation="horizontal">
-
+            <!-- RelativeLayout for Weight -->
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="16dp">
-
+                <!-- LinearLayout for Weight TextViews -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -279,7 +279,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
-
+                <!-- Weight icon-->
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="24dp"
@@ -289,7 +289,7 @@
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-
+    <!--Allergies and Reactions LinearLayout-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -309,7 +309,7 @@
             android:textColor="@color/black"
             android:textSize="22sp" />
     </LinearLayout>
-
+    <!-- First Allergie LinearLayout-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -344,7 +344,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"/>
             </LinearLayout>
-
+            <!-- Allergie 1 icon-->
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="30dp"
@@ -353,7 +353,7 @@
                 android:src="@drawable/profile_pink_calendar" />
         </RelativeLayout>
     </LinearLayout>
-
+    <!-- Second Allergie LinearLayout-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -388,7 +388,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"/>
             </LinearLayout>
-
+            <!-- Allergie 2 icon-->
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="30dp"
@@ -397,6 +397,7 @@
                 android:src="@drawable/profile_pink_calendar" />
         </RelativeLayout>
     </LinearLayout>
+    <!-- Third Allergie LinearLayout-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -431,7 +432,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"/>
             </LinearLayout>
-
+            <!-- Allergie 3 icon-->
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="30dp"
@@ -440,6 +441,7 @@
                 android:src="@drawable/profile_pink_calendar" />
         </RelativeLayout>
     </LinearLayout>
+    <!-- Other Allergies LinearLayout-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -474,7 +476,7 @@
                     android:textSize="20sp"
                     android:textStyle="bold"/>
             </LinearLayout>
-
+            <!-- Other allergies icon-->
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="30dp"
