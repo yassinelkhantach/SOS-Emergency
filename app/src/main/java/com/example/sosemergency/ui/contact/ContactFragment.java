@@ -49,7 +49,7 @@ public class ContactFragment extends Fragment {
         addNewContactCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                onAddNewContact();
             }
         });
 
@@ -75,5 +75,9 @@ public class ContactFragment extends Fragment {
     //delete contact
     public void onDeleteContact(int position){
         Log.d("Delete contact test", "onDeleteContact: position="+position);
+    }
+
+    public void onAddNewContact(){
+        Log.d("Add new contact test", "add new contact clicked");
     }
 }
