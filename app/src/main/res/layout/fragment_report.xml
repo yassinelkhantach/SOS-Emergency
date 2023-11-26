@@ -213,7 +213,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/report_search_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="3"
@@ -229,7 +229,8 @@
             android:width="0dp"
             android:backgroundTint="@color/primary"
             android:textColor="@color/white"
-            android:text="@string/report_location_button_text" />
+            android:text="@string/report_location_button_text"
+            android:clickable="true"/>
 
     </LinearLayout>
 
