@@ -28,12 +28,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin="16dp"
-                android:src="@drawable/profile_pink_user" />
+                android:src="@drawable/profile_pink_user"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/primary"/>
             <!-- RelativeLayout for Name and Date of Birth -->
             <RelativeLayout
                 android:id="@+id/profileNameDate"
@@ -58,7 +60,7 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
                     <!-- Date of birth TextView -->
                     <TextView
                         android:id="@+id/profileBD"
@@ -66,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:text="23-05-2001"
                         android:textColor="@color/black"
-                        android:textSize="17sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
                 <!-- Edit icon on the left (Top) -->
                 <ImageView
@@ -316,7 +318,7 @@
                 android:text="Allergies and Reactions"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="22sp" />
+                android:textSize="20sp" />
         </LinearLayout>
         <!-- First Allergie LinearLayout-->
         <LinearLayout
@@ -350,7 +352,7 @@
                         android:text="Apple"
                         android:layout_marginStart="35dp"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
                 <!-- Allergie 1 icon-->
@@ -394,7 +396,7 @@
                         android:text="Grape"
                         android:layout_marginStart="35dp"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
                 <!-- Allergie 2 icon-->
@@ -438,7 +440,7 @@
                         android:text="Strawberry"
                         android:layout_marginStart="35dp"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
                 <!-- Allergie 3 icon-->
@@ -482,7 +484,7 @@
                         android:text="Others"
                         android:layout_marginStart="35dp"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
                 <!-- Other allergies icon-->
