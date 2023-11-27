@@ -8,16 +8,16 @@
 
     <LinearLayout
         android:id="@+id/profileName"
-        android:layout_width="383dp"
+        android:layout_width="0dp"
         android:layout_height="131dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:background="@drawable/profile_border_background"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/profileImage"
@@ -62,16 +62,16 @@
             <!-- Edit icon on the left (Top) -->
             <ImageView
                 android:id="@+id/profileEditIcon"
-                android:layout_width="20dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:clickable="true"
                 android:src="@drawable/profile_pink_edit" />
             <ImageView
                 android:id="@+id/profileSaveIcon"
-                android:layout_width="20dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:clickable="true"
