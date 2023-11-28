@@ -10,9 +10,17 @@
     <color name="warning">#FFC107</color>
     <color name="gray">#A4A5AB</color>
     <color name="light">#F2F2F6</color>
-    <color name="primary_text">@color/black</color>
-    <color name="secondary_text">@color/gray</color>
     <color name="background">@color/light</color>
+    <!-- Navigation Bar Colors -->
+    <color name="navbar_background">#FFFFFF</color>
+    <color name="navbar_text">#000000</color>
+    <!-- Button Colors -->
+    <color name="button_primary">@color/primary</color>
+    <color name="button_secondary">@color/gray</color>
+    <!-- Text Color -->
+    <color name="text_primary">@color/black</color>
+    <color name="text_secondary">@color/gray</color>
+  
     <color name="extra_white">#FFFFFF</color>
     <color name="light_gray">#ADACAC</color>
 </resources>
