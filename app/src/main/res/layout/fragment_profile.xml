@@ -8,25 +8,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.profile.ProfileFragment">
 
         <LinearLayout
             android:id="@+id/profileName"
-            android:layout_width="0dp"
-            android:layout_height="131dp"
+            android:layout_width="372dp"
+            android:layout_height="127dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:background="@drawable/profile_border_background"
             android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImage"
@@ -34,8 +32,8 @@
                 android:layout_height="100dp"
                 android:layout_margin="16dp"
                 android:src="@drawable/profile_pink_user"
-                app:civ_border_width="1dp"
-                app:civ_border_color="@color/primary"/>
+                app:civ_border_color="@color/primary"
+                app:civ_border_width="1dp" />
             <!-- RelativeLayout for Name and Date of Birth -->
             <RelativeLayout
                 android:id="@+id/profileNameDate"
@@ -54,13 +52,13 @@
                         android:id="@+id/profileFullName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="DARDOURI Chaimae"
-                        android:textStyle="bold"
-                        android:inputType="text"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:inputType="text"
+                        android:text="DARDOURI Chaimae"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                     <!-- Date of birth TextView -->
                     <TextView
                         android:id="@+id/profileBD"
@@ -79,6 +77,7 @@
                     android:layout_alignParentEnd="true"
                     android:clickable="true"
                     android:src="@drawable/profile_pink_edit" />
+
                 <ImageView
                     android:id="@+id/profileSaveIcon"
                     android:layout_width="30dp"
@@ -86,8 +85,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:clickable="true"
-                    android:visibility="gone"
-                    android:src="@drawable/profile_pink_save" />
+                    android:src="@drawable/profile_pink_save"
+                    android:visibility="gone" />
             </RelativeLayout>
         </LinearLayout>
         <!-- LinearLayout for Age and Blood Type-->

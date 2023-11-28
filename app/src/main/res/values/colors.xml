@@ -13,4 +13,6 @@
     <color name="primary_text">@color/black</color>
     <color name="secondary_text">@color/gray</color>
     <color name="background">@color/light</color>
+    <color name="extra_white">#FFFFFF</color>
+    <color name="light_gray">#ADACAC</color>
 </resources>
