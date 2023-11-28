@@ -20,4 +20,7 @@
     <!-- Text Color -->
     <color name="text_primary">@color/black</color>
     <color name="text_secondary">@color/gray</color>
+  
+    <color name="extra_white">#FFFFFF</color>
+    <color name="light_gray">#ADACAC</color>
 </resources>
