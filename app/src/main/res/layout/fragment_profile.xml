@@ -14,20 +14,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-        android:padding="8dp">
+        android:padding="@dimen/spacing_medium">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
-            app:cardCornerRadius="14dp"
+            app:cardCornerRadius="@dimen/corner_radius_medium"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="8dp">
+                android:padding="@dimen/spacing_medium">
 
                 <FrameLayout
                     android:layout_width="116dp"
@@ -39,7 +39,7 @@
                         android:layout_width="130dp"
                         android:layout_height="101dp"
                         android:layout_gravity="center"
-                        android:padding="4dp"
+                        android:padding="@dimen/spacing_small"
                         android:src="@drawable/profile_pink_user"
                         app:civ_border_color="@color/primary"
                         app:civ_border_width="4dp" />
@@ -51,15 +51,15 @@
                     android:layout_gravity="center_vertical|start"
                     android:layout_weight="60"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="@dimen/spacing_medium">
 
                     <EditText
                         android:id="@+id/profileFullName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="DARDOURI Chaimae"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textColor="@color/navbar_text"
+                        android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="23-05-2001"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_size_small"
                         android:background="@android:color/transparent"
                         android:focusable="false"
                         android:focusableInTouchMode="false" />
@@ -81,27 +81,29 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="43dp"
-                    android:layout_weight="15">
+                    android:layout_weight="15"
+                    android:layout_gravity="center">
 
                     <ImageView
                         android:id="@+id/profileEditIcon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/profile_pink_edit"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:clickable="true" />
+                        android:layout_gravity="center"
+                        android:clickable="true"
+                        android:src="@drawable/profile_pink_edit" />
+
                     <ImageView
                         android:id="@+id/profileSaveIcon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_gravity="center"
                         android:clickable="true"
-                        android:visibility="gone"
-                        android:src="@drawable/profile_pink_save" />
+                        android:src="@drawable/profile_pink_save"
+                        android:visibility="gone" />
                 </FrameLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -110,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/spacing_large">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,13 +124,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="1dp"
-                    app:cardCornerRadius="14dp">
+                    app:cardCornerRadius="@dimen/corner_radius_medium">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:padding="@dimen/spacing_medium">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -136,14 +138,14 @@
                             android:layout_gravity="center_vertical|start"
                             android:layout_weight="60"
                             android:orientation="vertical"
-                            android:padding="8dp">
+                            android:padding="@dimen/spacing_medium">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Age"
                                 android:textColor="@color/black"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/text_size_medium" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -158,7 +160,7 @@
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
                                     android:text="21"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_medium"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -166,13 +168,13 @@
                                     android:layout_height="wrap_content"
                                     android:background="@android:color/transparent"
                                     android:text=" Years"
-                                    android:textSize="16sp" />
+                                    android:textSize="@dimen/text_size_medium" />
                             </LinearLayout>
                         </LinearLayout>
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
@@ -181,21 +183,21 @@
                 </androidx.cardview.widget.CardView>
 
                 <Space
-                    android:layout_width="20dp"
+                    android:layout_width="@dimen/spacing_large"
                     android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="14dp"
+                    app:cardCornerRadius="@dimen/corner_radius_medium"
                     android:layout_margin="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:padding="@dimen/spacing_medium">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -203,14 +205,14 @@
                             android:layout_gravity="center_vertical|start"
                             android:layout_weight="60"
                             android:orientation="vertical"
-                            android:padding="8dp">
+                            android:padding="@dimen/spacing_medium">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Blood Type"
                                 android:textColor="@color/black"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/text_size_medium" />
 
                             <EditText
                                 android:id="@+id/profileBlood"
@@ -220,14 +222,14 @@
                                 android:focusable="false"
                                 android:focusableInTouchMode="false"
                                 android:text="O+"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_size_medium"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
@@ -239,20 +241,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="@dimen/spacing_medium">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="14dp"
+                    app:cardCornerRadius="@dimen/corner_radius_medium"
                     android:layout_margin="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:padding="@dimen/spacing_medium">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -260,14 +262,14 @@
                             android:layout_gravity="center_vertical|start"
                             android:layout_weight="60"
                             android:orientation="vertical"
-                            android:padding="8dp">
+                            android:padding="@dimen/spacing_medium">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Height"
-                                android:textColor="@color/black"
-                                android:textSize="16sp" />
+                                android:textColor="@color/navbar_text"
+                                android:textSize="@dimen/text_size_medium" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -282,7 +284,7 @@
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
                                     android:text="54"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/text_size_medium"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -290,13 +292,13 @@
                                     android:layout_height="wrap_content"
                                     android:background="@android:color/transparent"
                                     android:text=" Cm"
-                                    android:textSize="16sp" />
+                                    android:textSize="@dimen/text_size_medium" />
                             </LinearLayout>
                         </LinearLayout>
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
@@ -305,21 +307,21 @@
                 </androidx.cardview.widget.CardView>
 
                 <Space
-                    android:layout_width="20dp"
+                    android:layout_width="@dimen/spacing_large"
                     android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:cardCornerRadius="14dp"
+                    app:cardCornerRadius="@dimen/corner_radius_medium"
                     android:layout_margin="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:padding="@dimen/spacing_medium">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -327,14 +329,14 @@
                             android:layout_gravity="center_vertical|start"
                             android:layout_weight="60"
                             android:orientation="vertical"
-                            android:padding="8dp">
+                            android:padding="@dimen/spacing_medium">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Weight"
                                 android:textColor="@color/black"
-                                android:textSize="16sp" />
+                                android:textSize="@dimen/text_size_medium" />
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -346,22 +348,22 @@
                                     android:background="@android:color/transparent"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-                                    android:text="O+"
-                                    android:textSize="16sp"
+                                    android:text="53"
+                                    android:textSize="@dimen/text_size_medium"
                                     android:textStyle="bold" />
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@android:color/transparent"
                                     android:text=" Kg"
-                                    android:textSize="16sp" />
+                                    android:textSize="@dimen/text_size_medium" />
                             </LinearLayout>
 
                         </LinearLayout>
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center"
@@ -374,23 +376,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/spacing_large">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Allergies and Reactions"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
-                android:textColor="@color/primary_text"/>
+                android:textColor="@color/navbar_text"/>
 
             <!-- CardView for Apple Allergy -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/appleAllergie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="14dp"
-                android:layout_marginTop="10dp"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp">
@@ -398,12 +400,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/profile_yellow_apple" />
@@ -411,10 +413,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         android:text="Apple"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_medium"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -425,8 +427,8 @@
                 android:id="@+id/grapeAllergie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="14dp"
-                android:layout_marginTop="10dp"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp">
@@ -434,12 +436,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/profile_green_grape" />
@@ -447,10 +449,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         android:text="Grape"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_medium"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -461,8 +463,8 @@
                 android:id="@+id/strawberryAllergie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="14dp"
-                android:layout_marginTop="10dp"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp">
@@ -470,12 +472,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/profile_pink_strawberry" />
@@ -483,10 +485,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         android:text="Strawberry"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_medium"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -496,8 +498,8 @@
                 android:id="@+id/appleAllergiee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="14dp"
-                android:layout_marginTop="10dp"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp">
@@ -505,12 +507,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/profile_yellow_apple" />
@@ -518,10 +520,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         android:text="Apple"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_medium"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -532,8 +534,8 @@
                 android:id="@+id/grapeAllergyy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="14dp"
-                android:layout_marginTop="10dp"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp">
@@ -541,12 +543,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/profile_green_grape" />
@@ -554,10 +556,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         android:text="Grape"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_medium"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -568,8 +570,8 @@
                 android:id="@+id/strawberryAllergyy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="14dp"
-                android:layout_marginTop="10dp"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp">
@@ -577,12 +579,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/profile_pink_strawberry" />
@@ -590,10 +592,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         android:text="Strawberry"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_medium"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -603,21 +605,21 @@
                 android:id="@+id/otherAllergie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_marginBottom="@dimen/spacing_medium"
                 android:layout_marginStart="1dp"
                 android:layout_marginEnd="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/profile_pink_other" />
@@ -625,10 +627,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         android:text="Others"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_medium"
                         android:gravity="center"/>
 
                 </LinearLayout>

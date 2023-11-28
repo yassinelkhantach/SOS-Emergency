@@ -12,7 +12,7 @@
     <string name="name_placeholder_contact">Trusted Contact</string>
     <string name="phone_placeholder_contact">+212600000000</string>
     <string name="report_question_text">What kind of emergency?</string>
-    <string name="report_location_button_text">My Location</string>
+    <string name="report_location_button_text">Find Location</string>
     <string name="report_send_button">Send Report</string>
     <string name="report_fire_icon_text">Fire</string>
     <string name="report_accident_icon_text">Accident</string>
@@ -20,4 +20,7 @@
     <string name="report_flood_icon_text">Flood</string>
     <string name="report_bribery_icon_text">Bribery</string>
     <string name="report_crime_icon_text">Crime</string>
+    <string name="report_button_description_home">You have more details about the emergency? report it now! \nNotify authorities and seek assistance</string>
+    <string name="header_description_home">Press the button below and the help will reach you shortly</string>
+    <string name="header_title_home">Emergency help needed?</string>
 </resources>

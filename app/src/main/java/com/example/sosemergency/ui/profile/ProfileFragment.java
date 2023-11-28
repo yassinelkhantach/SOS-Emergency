@@ -1,9 +1,11 @@
 package com.example.sosemergency.ui.profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -54,6 +57,14 @@ import com.example.sosemergency.databinding.FragmentProfileBinding;
             editText.setFocusableInTouchMode(true);
             editText.setFocusable(true);
             editText.requestFocus();
+            editText.setSelection(editText.getText().length());
+
+            // Set a text color while activate editing
+            editText.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
+
+            // Show the Keybord
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
 
             // Show the save icon and hide the edit icon
             editIcon.setVisibility(View.GONE);
@@ -67,9 +78,16 @@ import com.example.sosemergency.databinding.FragmentProfileBinding;
             // Update the ViewModel with the modified text
             notificationsViewModel.setText(modifiedFullName);
 
+            // Set a text color when saving
+            editText.setTextColor(ContextCompat.getColor(getContext(), R.color.navbar_text));
+
             // Make the TextView non-editable again
             editText.setFocusable(false);
             editText.setFocusableInTouchMode(false);
+
+            // Hide the Keybord
+            InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
             // Show the edit icon and hide the save icon
             editIcon.setVisibility(View.VISIBLE);
