@@ -20,4 +20,7 @@
     <string name="report_flood_icon_text">Flood</string>
     <string name="report_bribery_icon_text">Bribery</string>
     <string name="report_crime_icon_text">Crime</string>
+    <string name="report_button_description_home">You have more details about the emergency? report it now! \nNotify authorities and seek assistance</string>
+    <string name="header_description_home">Press the button below and the help will reach you shortly</string>
+    <string name="header_title_home">Emergency help needed?</string>
 </resources>
