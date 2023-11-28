@@ -1,1 +1,55 @@
-/build
+# Android Studio
+/.idea/
+/.gradle/
+/build/
+/captures/
+.externalNativeBuild/
+
+# Gradle
+*.iml
+local.properties
+
+# Proguard
+/proguard-rules.pro
+
+# Android Studio Navigation editor temp files
+/navigation/
+
+# lint
+/lint/
+
+# Logs
+*.log
+
+# Android Studio
+/.DS_Store
+/*.iml
+*.iws
+*.bak
+*.tmp
+
+# User-specific files
+.gradle/
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build/
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnkc
