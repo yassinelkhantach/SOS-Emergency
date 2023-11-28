@@ -12,7 +12,7 @@
     <string name="name_placeholder_contact">Trusted Contact</string>
     <string name="phone_placeholder_contact">+212600000000</string>
     <string name="report_question_text">What kind of emergency?</string>
-    <string name="report_location_button_text">My Location</string>
+    <string name="report_location_button_text">Find Location</string>
     <string name="report_send_button">Send Report</string>
     <string name="report_fire_icon_text">Fire</string>
     <string name="report_accident_icon_text">Accident</string>

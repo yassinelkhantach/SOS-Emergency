@@ -7,6 +7,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     private RadioButton reportCrimeButton;
     private RadioButton reportFloodButton;
     private RadioButton reportBriberyButton;
+    private boolean isMapReady = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -137,26 +139,44 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onMapReady(@NonNull GoogleMap googleMap) {
         // Customize your map here
         this.googleMap = googleMap;
+        isMapReady = true;
 
         // Enable the My Location layer and the related control on the map
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
+            // Set up the map click listener
+            googleMap.setOnMapClickListener(this);
+            // Set up the "My Location" button click listener
+            googleMap.setOnMyLocationButtonClickListener(() -> {
+                // Clear existing markers
+                clearMarkers();
+                // Load the current location on the map
+                checkLocationPermissionAndLoadLocation();
+                return true;
+            });
+            // Set up the "My Location" click listener
+            googleMap.setOnMyLocationClickListener(location -> {
+                // Clear existing markers
+                clearMarkers();
+                // Add a marker for the current location
+                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                Marker myLocationMarker = googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("My Location"));
+                markers.add(myLocationMarker);
+            });
+
+            // Load the current location on the map
+            loadMyLocation();
         } else {
             // Request location permission from the user
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
-        // Load the current location on the map
-        checkLocationPermissionAndLoadLocation();
-
-        // Set up the map click listener
-        googleMap.setOnMapClickListener(this);
     }
+
 
     @Override
     public void onMapClick(LatLng latLng) {
         // Clear existing markers
         clearMarkers();
-
         // Add a marker at the clicked position with latitude and longitude as the title
         String markerTitle = latLng.latitude + "," + latLng.longitude;
         Marker clickedMarker = googleMap.addMarker(new MarkerOptions().position(latLng).title(markerTitle));
@@ -171,14 +191,9 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                 // Permission granted, enable My Location layer
                 if (googleMap != null) {
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
+                        ActivityCompat.requestPermissions(requireActivity(),
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                LOCATION_PERMISSION_REQUEST_CODE);
                     }
                     googleMap.setMyLocationEnabled(true);
                 }
@@ -245,6 +260,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
             // Permission granted, we load current location
+            googleMap.setMyLocationEnabled(true);
             loadMyLocation();
         } else {
             // Permission not granted, we request it
@@ -255,19 +271,33 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     private void loadMyLocation() {
-        if (googleMap != null) {
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+        if (isMapReady) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, we load current location
+                googleMap.setMyLocationEnabled(true);
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(requireActivity(), location -> {
+                            if (location != null) {
+                                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                                // Clear existing markers
+                                clearMarkers();
+
+                                // Add a marker for the current location
+                                Marker myLocationMarker = googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("My Location"));
+                                markers.add(myLocationMarker);
+
+                                // Move the camera to the current location
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+                                googleMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
+                            }
+                        });
+            } else {
+                // Permission not granted, we request it
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_PERMISSION_REQUEST_CODE);
             }
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(requireActivity(), this::onLocationSuccess);
         }
     }
 
