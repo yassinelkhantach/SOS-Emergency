@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment"
     android:fillViewport="true"
-   >
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -159,7 +159,7 @@
                                     android:background="@android:color/transparent"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-                                    android:text="21"
+                                    android:text="22"
                                     android:textSize="@dimen/text_size_medium"
                                     android:textStyle="bold" />
 
