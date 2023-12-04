@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/report_question_text"
-        android:layout_margin="10dp"
-        android:textSize="20dp"
+        android:layout_margin="@dimen/spacing_medium"
+        android:textSize="@dimen/text_size_large"
         android:textColor="@color/primary" />
 
     <RadioGroup
@@ -26,7 +26,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginVertical="12dp"
+            android:layout_marginVertical="@dimen/text_size_small"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -209,14 +209,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/report_search_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:width="0dp"
             android:hint="Where is the emergency?"
             android:inputType="text"/>
@@ -244,8 +244,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7"
-            />
+            android:layout_weight="7" />
 
         <Button
             android:id="@+id/report_send_button"
@@ -257,7 +256,7 @@
             android:gravity="center"
             android:text="@string/report_send_button"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textSize="@dimen/text_size_large" />
     </LinearLayout>
 
 
