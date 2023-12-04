@@ -6,15 +6,21 @@ import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +32,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.sosemergency.R;
 import com.example.sosemergency.databinding.FragmentReportBinding;
+import com.example.sosemergency.entities.Contact;
+import com.example.sosemergency.utils.ContactPersistenceManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -60,6 +68,10 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     private RadioButton reportFloodButton;
     private RadioButton reportBriberyButton;
     private boolean isMapReady = false;
+    private Button reportSendButton;
+    private LatLng selectedMarkerPosition;
+    private int checkedRadioButtonId;
+    private static ContactPersistenceManager contactPersistenceManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -109,6 +121,9 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         reportFloodButton.setOnClickListener(this);
         reportBriberyButton.setOnClickListener(this);
 
+        reportSendButton = view.findViewById(R.id.report_send_button);  // Initialize the Send Report button
+        reportSendButton.setOnClickListener(v -> sendEmergencyReport());
+        checkedRadioButtonId = -1;
         return view;
     }
 
@@ -118,19 +133,18 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
 
         // Identify which RadioButton was clicked
         if (v.getId() == R.id.report_fire_button) {
-            checkedId = R.id.report_fire_button;
+            checkedId = checkedRadioButtonId = R.id.report_fire_button;
         } else if (v.getId() == R.id.report_accident_button) {
-            checkedId = R.id.report_accident_button;
+            checkedId = checkedRadioButtonId = R.id.report_accident_button;
         } else if (v.getId() == R.id.report_earthquake_button) {
-            checkedId = R.id.report_earthquake_button;
+            checkedId = checkedRadioButtonId = R.id.report_earthquake_button;
         } else if (v.getId() == R.id.report_crime_button) {
-            checkedId = R.id.report_crime_button;
+            checkedId = checkedRadioButtonId = R.id.report_crime_button;
         } else if (v.getId() == R.id.report_flood_button) {
-            checkedId = R.id.report_flood_button;
+            checkedId = checkedRadioButtonId = R.id.report_flood_button;
         } else if (v.getId() == R.id.report_bribery_button) {
-            checkedId = R.id.report_bribery_button;
+            checkedId = checkedRadioButtonId = R.id.report_bribery_button;
         }
-
         // Calling updateIconColors method to update colors and perform other actions
         updateIconColors(v, checkedId);
     }
@@ -160,6 +174,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                 clearMarkers();
                 // Add a marker for the current location
                 LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                selectedMarkerPosition = currentLatLng;
                 Marker myLocationMarker = googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("My Location"));
                 markers.add(myLocationMarker);
             });
@@ -181,6 +196,9 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         String markerTitle = latLng.latitude + "," + latLng.longitude;
         Marker clickedMarker = googleMap.addMarker(new MarkerOptions().position(latLng).title(markerTitle));
         markers.add(clickedMarker);
+        selectedMarkerPosition = latLng;
+        // Update the selectedMarkerPosition
+        selectedMarkerPosition = latLng;
     }
 
     @Override
@@ -210,6 +228,10 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         binding = null;
     }
 
+    private LatLng getCurrentLocation() {
+        return selectedMarkerPosition;
+    }
+
     private void centerMapOnMyLocation() {
         if (googleMap != null) {
             if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -233,6 +255,11 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     private void updateIconColors(View view, int checkedId) {
+        // Find the parent LinearLayout
+        LinearLayout parentLayout = (LinearLayout) view.getParent();
+        // Find the TextView inside the parent LinearLayout (assuming it's always the second child)
+        TextView targetTextView = (TextView) parentLayout.getChildAt(1);
+
         // Reset color filter for all buttons
         resetColorFilter(reportFireButton);
         resetColorFilter(reportAccidentButton);
@@ -244,8 +271,10 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         // Set color filter for the checked button
         RadioButton checkedButton = view.findViewById(checkedId);
         if (checkedButton != null) {
-            int color = ContextCompat.getColor(requireContext(), R.color.danger);
+            int color = ContextCompat.getColor(requireContext(), R.color.primary_dark);
             checkedButton.getCompoundDrawables()[1].setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            targetTextView.setTextColor(color);
+            checkedButton.setChecked(true);
         }
     }
 
@@ -253,6 +282,10 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     private void resetColorFilter(RadioButton radioButton) {
         if (radioButton != null) {
             radioButton.getCompoundDrawables()[1].setColorFilter(null);
+            LinearLayout parentLayout = (LinearLayout) radioButton.getParent();
+            TextView targetTextView = (TextView) parentLayout.getChildAt(1);
+            int color = ContextCompat.getColor(requireContext(), R.color.primary);
+            targetTextView.setTextColor(color);
         }
     }
 
@@ -357,5 +390,74 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
             }
             markers.clear();
         }
+    }
+
+    private void sendEmergencyReport() {
+        String emergencyType = getEmergencyType();
+
+        if (emergencyType != null) {
+            LatLng currentLatLng = getCurrentLocation();
+            String mapsLink = (currentLatLng != null) ? createMapsLink(currentLatLng) : "";
+            String smsMessage = createSmsMessage(emergencyType, mapsLink);
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    List<Contact> contacts = ContactPersistenceManager.getContacts();
+                    if (!contacts.isEmpty()) {
+                        for (Contact contact : contacts) {
+                            sendSms(contact.getPhoneNumber(), smsMessage);
+                        }
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast("Emergency report sent to all contacts!");
+                                ContactPersistenceManager.deleteContacts();
+                            }
+                        });
+                    } else {
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast("No contacts in the database");
+                            }
+                        });
+                    }
+                }
+            });
+
+        } else {
+            showToast("Please select an emergency type");
+        }
+    }
+
+    private void sendSms(String phoneNumber, String message) {
+        SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private String getEmergencyType() {
+        return (checkedRadioButtonId != -1) ?
+                ((RadioButton) getView().findViewById(checkedRadioButtonId)).getText().toString() :
+                null;
+    }
+
+    private String createMapsLink(LatLng currentLatLng) {
+        return "https://www.google.com/maps/search/?api=1&query=" +
+                currentLatLng.latitude + "," + currentLatLng.longitude;
+    }
+
+    private String createSmsMessage(String emergencyType, String mapsLink) {
+        StringBuilder smsMessageBuilder = new StringBuilder("I need your help! I'm in an emergency situation\nType: ")
+                .append(emergencyType);
+
+        if (!mapsLink.isEmpty()) {
+            smsMessageBuilder.append("\nLocation: ").append(mapsLink);
+        }
+
+        return smsMessageBuilder.toString();
     }
 }
