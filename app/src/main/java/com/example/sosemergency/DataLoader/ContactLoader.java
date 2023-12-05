@@ -66,6 +66,6 @@ public interface ContactLoader {
      * @param phoneNumber - The phone number of the contact to be deleted.
      */
     @Query("DELETE FROM contacts WHERE phoneNumber = :phoneNumber")
-    void deleteContactById(String phoneNumber);
+    void deleteContact(String phoneNumber);
 }
 

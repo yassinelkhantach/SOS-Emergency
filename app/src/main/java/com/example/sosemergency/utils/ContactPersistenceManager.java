@@ -99,7 +99,7 @@ public class ContactPersistenceManager {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                appDatabase.contactLoader().deleteContactById(phoneNumber);
+                appDatabase.contactLoader().deleteContact(phoneNumber);
             }
         });
     }

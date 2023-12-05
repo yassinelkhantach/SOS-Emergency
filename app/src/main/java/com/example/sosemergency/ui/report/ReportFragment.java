@@ -1,6 +1,7 @@
 package com.example.sosemergency.ui.report;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.location.Address;
@@ -54,6 +55,7 @@ import java.util.List;
  */
 public class ReportFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 1;
     private FragmentReportBinding binding;
     private RadioGroup radioGroup;
     private GoogleMap googleMap;
@@ -84,12 +86,6 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
 
         // Initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.report_map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-        }
 
         // Set up the map click listener
         if (googleMap != null) {
@@ -128,6 +124,16 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.report_map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         int checkedId = -1;
 
@@ -153,7 +159,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onMapReady(@NonNull GoogleMap googleMap) {
         // Customize your map here
         this.googleMap = googleMap;
-        isMapReady = true;
+        this.isMapReady = true;
 
         // Enable the My Location layer and the related control on the map
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -165,7 +171,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                 // Clear existing markers
                 clearMarkers();
                 // Load the current location on the map
-                checkLocationPermissionAndLoadLocation();
+                loadMyLocation();
                 return true;
             });
             // Set up the "My Location" click listener
@@ -178,13 +184,12 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                 Marker myLocationMarker = googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("My Location"));
                 markers.add(myLocationMarker);
             });
-
-            // Load the current location on the map
-            loadMyLocation();
         } else {
             // Request location permission from the user
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
+        // Load the current location on the map
+        loadMyLocation();
     }
 
 
@@ -207,17 +212,18 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, enable My Location layer
-                if (googleMap != null) {
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(requireActivity(),
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                LOCATION_PERMISSION_REQUEST_CODE);
-                    }
-                    googleMap.setMyLocationEnabled(true);
-                }
+                centerMapOnMyLocation();
             } else {
                 // Permission denied, handle accordingly
                 Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == MY_PERMISSIONS_REQUEST_SEND_SMS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed to send SMS
+                sendSmsAfterPermissionCheck();
+            } else {
+                showToast("Permission denied. Cannot send SMS.");
             }
         }
     }
@@ -244,8 +250,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                 fusedLocationClient.getLastLocation()
                         .addOnSuccessListener(requireActivity(), location -> {
                             if (location != null) {
-                                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
+                                onLocationSuccess(location);
                             }
                         });
             } else {
@@ -293,7 +298,6 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED) {
             // Permission granted, we load current location
-            googleMap.setMyLocationEnabled(true);
             loadMyLocation();
         } else {
             // Permission not granted, we request it
@@ -305,24 +309,16 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
 
     private void loadMyLocation() {
         if (isMapReady) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, we load current location
+            // Check if location permission is granted
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED) {
+
+                // Permission granted, we load the current location
                 googleMap.setMyLocationEnabled(true);
                 fusedLocationClient.getLastLocation()
                         .addOnSuccessListener(requireActivity(), location -> {
                             if (location != null) {
-                                LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-                                // Clear existing markers
-                                clearMarkers();
-
-                                // Add a marker for the current location
-                                Marker myLocationMarker = googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("My Location"));
-                                markers.add(myLocationMarker);
-
-                                // Move the camera to the current location
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
-                                googleMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
+                                onLocationSuccess(location);
                             }
                         });
             } else {
@@ -331,8 +327,13 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
+        } else {
+            // Map is not ready, wait for it to be ready before loading the location
+            // You might want to implement some logic to retry or handle this case appropriately
         }
     }
+
+
 
     private void onLocationSuccess(Location location) {
         if (location != null) {
@@ -396,12 +397,32 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         String emergencyType = getEmergencyType();
 
         if (emergencyType != null) {
-            LatLng currentLatLng = getCurrentLocation();
-            String mapsLink = (currentLatLng != null) ? createMapsLink(currentLatLng) : "";
-            String smsMessage = createSmsMessage(emergencyType, mapsLink);
+            // Check if SEND_SMS permission is granted
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                // Permission is already granted
+                sendSmsAfterPermissionCheck();
+            } else {
+                // Permission is not granted, request it
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+        } else {
+            showToast("Please select an emergency type");
+        }
+    }
 
-            AsyncTask.execute(new Runnable() {
-                @Override
+
+    // Logic behind sending the SMS to the contacts list
+    private void sendSmsAfterPermissionCheck() {
+        String emergencyType = getEmergencyType();
+        LatLng currentLatLng = getCurrentLocation();
+        String mapsLink = (currentLatLng != null) ? createMapsLink(currentLatLng) : "";
+        String smsMessage = createSmsMessage(emergencyType, mapsLink);
+
+        AsyncTask.execute(new Runnable() {
+            @Override
                 public void run() {
                     List<Contact> contacts = ContactPersistenceManager.getContacts();
                     if (!contacts.isEmpty()) {
@@ -424,13 +445,8 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                         });
                     }
                 }
-            });
-
-        } else {
-            showToast("Please select an emergency type");
-        }
+        });
     }
-
     private void sendSms(String phoneNumber, String message) {
         SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
     }
