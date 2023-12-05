@@ -3,6 +3,7 @@ package com.example.sosemergency.ui.profile;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,14 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,6 +45,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private ProfileViewModel notificationsViewModel;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private Dialog bloodTypeDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +65,10 @@ public class ProfileFragment extends Fragment {
         final ImageView profileEditIcon = binding.profileEditIcon;
         final ImageView profileSaveIcon = binding.profileSaveIcon;
         final EditText profileAge = binding.profileAge;
+        final CardView profileBloodCard = binding.profileBloodCard;
+
+        // Initialize the blood type dialog
+        setupBloodTypeDialog();
 
         // Use lambda expression for click listeners
         profileEditIcon.setOnClickListener(v -> enableEditing(profileFullName, profileBD, profileEditIcon, profileSaveIcon));
@@ -65,6 +76,9 @@ public class ProfileFragment extends Fragment {
 
         // Observe the LiveData directly
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), profileFullName::setText);
+
+        // Show blood type dialog when blood card view is clicked
+        profileBloodCard.setOnClickListener(v -> showBloodTypeDialog());
 
         return root;
     }
@@ -170,6 +184,58 @@ public class ProfileFragment extends Fragment {
         }
 
         return age;
+    }
+
+    private void setupBloodTypeDialog() {
+        bloodTypeDialog = new Dialog(requireContext());
+
+        // Inflate the layout for the dialog
+        View dialogView = getLayoutInflater().inflate(R.layout.blood_type_dialog, null);
+        bloodTypeDialog.setContentView(dialogView);
+
+        Spinner spinnerBloodType = bloodTypeDialog.findViewById(R.id.spinnerBloodType);
+        Button btnSelectBloodType = bloodTypeDialog.findViewById(R.id.btnSelectBloodType);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
+                R.array.blood_types, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Apply the adapter to the spinner
+        spinnerBloodType.setAdapter(adapter);
+
+        // Set up a listener to handle item selection
+        spinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Handle the selected blood type
+                String selectedBloodType = (String) parentView.getItemAtPosition(position);
+                // You can use the selected blood type as needed
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing here
+            }
+        });
+
+        btnSelectBloodType.setOnClickListener(v -> {
+            // Update the ViewModel with the selected blood type
+            String selectedBloodType = (String) spinnerBloodType.getSelectedItem();
+            notificationsViewModel.setBloodType(selectedBloodType);
+
+            // Update the EditText in your CardView with the selected blood type
+            EditText editText = requireView().findViewById(R.id.profileBlood);
+            editText.setText(selectedBloodType);
+            bloodTypeDialog.dismiss();
+        });
+    }
+    private void showBloodTypeDialog() {
+        if (bloodTypeDialog != null) {
+            bloodTypeDialog.show();
+        }
     }
 
     @Override
