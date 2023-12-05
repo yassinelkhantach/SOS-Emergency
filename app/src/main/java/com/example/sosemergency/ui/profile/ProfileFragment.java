@@ -48,7 +48,17 @@ public class ProfileFragment extends Fragment {
     private Dialog bloodTypeDialog;
     private Dialog heightDialog;
     private Dialog weightDialog;
+    private CardView appleAllergie;
+    private CardView grapeAllergie;
+    private CardView strawberryAllergie;
+    private CardView orangeAllergie;
+    private CardView bananaAllergie;
+    private CardView fishAllergie;
+    private CardView otherAllergie;
 
+    private ImageView allergiesEditIcon;
+    private ImageView allergiesSaveIcon;
+    private boolean isEditMode = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +81,26 @@ public class ProfileFragment extends Fragment {
         final CardView profileBloodCard = binding.profileBloodCard;
         final CardView profileHeightCard = binding.profileHeightCard;
         final CardView profileWeightCard = binding.profileWeightCard;
+
+        // Initialize the allergies
+        appleAllergie = binding.appleAllergie;
+        grapeAllergie = binding.grapeAllergie;
+        strawberryAllergie = binding.strawberryAllergie;
+        orangeAllergie = binding.orangeAllergie;
+        bananaAllergie = binding.bananaAllergie;
+        fishAllergie = binding.fishAllergie;
+        otherAllergie = binding.otherAllergie;
+
+        // Initialize the edit and save icons for allergies
+        allergiesEditIcon = binding.AllergiesEditIcon;
+        allergiesSaveIcon = binding.AllergiesSaveIcon;
+
+        // Set click listeners for the edit and save icons for allergies
+        allergiesEditIcon.setOnClickListener(v -> toggleAllergiesEditMode());
+        allergiesSaveIcon.setOnClickListener(v -> saveSelectedAllergies());
+
+        // Set click listeners for each allergy card
+        setupAllergyClickListeners();
 
         // Initialize the blood type dialog
         setupBloodTypeDialog();
@@ -312,6 +342,78 @@ public class ProfileFragment extends Fragment {
             weightDialog.show();
         }
     }
+
+    private void toggleAllergiesEditMode() {
+        isEditMode = !isEditMode;
+
+        // Show or hide the save icon based on the edit mode
+        allergiesSaveIcon.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+
+        // Show or hide the edit icon based on the edit mode
+        allergiesEditIcon.setVisibility(isEditMode ? View.GONE : View.VISIBLE);
+
+        // Enable or disable click listeners based on the edit mode
+        setAllergiesClickability(isEditMode);
+    }
+
+    private void setAllergiesClickability(boolean isClickable) {
+        appleAllergie.setClickable(isClickable);
+        grapeAllergie.setClickable(isClickable);
+        strawberryAllergie.setClickable(isClickable);
+        orangeAllergie.setClickable(isClickable);
+        bananaAllergie.setClickable(isClickable);
+        fishAllergie.setClickable(isClickable);
+        otherAllergie.setClickable(isClickable);
+    }
+
+    private void setupAllergyClickListeners() {
+        // Set click listener for the Apple Allergy card
+        appleAllergie.setOnClickListener(v -> toggleAllergySelection(appleAllergie));
+
+        // Set click listener for the Grape Allergy card
+        grapeAllergie.setOnClickListener(v -> toggleAllergySelection(grapeAllergie));
+
+        // Set click listener for the Strawberry Allergy card
+        strawberryAllergie.setOnClickListener(v -> toggleAllergySelection(strawberryAllergie));
+
+        // Set click listener for the Orange Allergy card
+        orangeAllergie.setOnClickListener(v -> toggleAllergySelection(orangeAllergie));
+
+        // Set click listener for the Banana Allergy card
+        bananaAllergie.setOnClickListener(v -> toggleAllergySelection(bananaAllergie));
+
+        // Set click listener for the Fish Allergy card
+        fishAllergie.setOnClickListener(v -> toggleAllergySelection(fishAllergie));
+
+        // Set click listener for the Other Allergy card
+        otherAllergie.setOnClickListener(v -> toggleAllergySelection(otherAllergie));
+    }
+
+    private void toggleAllergySelection(CardView allergyCard) {
+        if (isEditMode) {
+            // Toggle the background color between white and the default color
+            int defaultColor = ContextCompat.getColor(requireContext(), R.color.extra_white);
+            int selectedColor = ContextCompat.getColor(requireContext(), R.color.white);
+
+            if (allergyCard.getCardBackgroundColor().getDefaultColor() == defaultColor) {
+                allergyCard.setCardBackgroundColor(selectedColor);
+            } else {
+                allergyCard.setCardBackgroundColor(defaultColor);
+            }
+        }
+    }
+    private void saveSelectedAllergies() {
+
+        // After saving, hide the save icon and show the edit icon
+        allergiesSaveIcon.setVisibility(View.GONE);
+        allergiesEditIcon.setVisibility(View.VISIBLE);
+
+        // Enable or disable click listeners based on the edit mode
+        setAllergiesClickability(false);
+    }
+
+
+
 
     @Override
     public void onDestroyView() {
