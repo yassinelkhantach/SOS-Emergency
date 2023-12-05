@@ -246,6 +246,7 @@
                 android:layout_marginTop="@dimen/spacing_medium">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/profileHeightCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -313,6 +314,7 @@
                     android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/profileWeightCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

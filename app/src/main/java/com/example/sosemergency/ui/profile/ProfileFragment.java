@@ -46,6 +46,9 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel notificationsViewModel;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private Dialog bloodTypeDialog;
+    private Dialog heightDialog;
+    private Dialog weightDialog;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,9 +69,17 @@ public class ProfileFragment extends Fragment {
         final ImageView profileSaveIcon = binding.profileSaveIcon;
         final EditText profileAge = binding.profileAge;
         final CardView profileBloodCard = binding.profileBloodCard;
+        final CardView profileHeightCard = binding.profileHeightCard;
+        final CardView profileWeightCard = binding.profileWeightCard;
 
         // Initialize the blood type dialog
         setupBloodTypeDialog();
+
+        // Initialize the height dialog
+        setupHeightDialog();
+
+        // Initialize the weight dialog
+        setupWeightDialog();
 
         // Use lambda expression for click listeners
         profileEditIcon.setOnClickListener(v -> enableEditing(profileFullName, profileBD, profileEditIcon, profileSaveIcon));
@@ -79,6 +90,12 @@ public class ProfileFragment extends Fragment {
 
         // Show blood type dialog when blood card view is clicked
         profileBloodCard.setOnClickListener(v -> showBloodTypeDialog());
+
+        // Set an OnClickListener for the height card
+        profileHeightCard.setOnClickListener(v -> showHeightDialog());
+
+        // Set an OnClickListener for the weight card
+        profileWeightCard.setOnClickListener(v -> showWeightDialog());
 
         return root;
     }
@@ -235,6 +252,64 @@ public class ProfileFragment extends Fragment {
     private void showBloodTypeDialog() {
         if (bloodTypeDialog != null) {
             bloodTypeDialog.show();
+        }
+    }
+
+    private void setupHeightDialog() {
+        heightDialog = new Dialog(requireContext());
+
+        // Inflate the layout for the dialog
+        View dialogView = getLayoutInflater().inflate(R.layout.height_dialog, null);
+        heightDialog.setContentView(dialogView);
+
+        EditText editTextHeight = heightDialog.findViewById(R.id.editTextHeight);
+        Button btnSelectHeight = heightDialog.findViewById(R.id.btnSelectHeight);
+
+        btnSelectHeight.setOnClickListener(v -> {
+            // Update the ViewModel with the entered height
+            String enteredHeight = editTextHeight.getText().toString();
+            // You can use the entered height as needed
+
+            // Update the EditText in your CardView with the entered height
+            EditText editText = requireView().findViewById(R.id.profileHeight);
+            editText.setText(enteredHeight);
+
+            heightDialog.dismiss();
+        });
+    }
+
+    private void showHeightDialog() {
+        if (heightDialog != null) {
+            heightDialog.show();
+        }
+    }
+
+    private void setupWeightDialog() {
+        weightDialog = new Dialog(requireContext());
+
+        // Inflate the layout for the dialog
+        View dialogView = getLayoutInflater().inflate(R.layout.weight_dialog, null);
+        weightDialog.setContentView(dialogView);
+
+        EditText editTextWeight = weightDialog.findViewById(R.id.editTextWeight);
+        Button btnSelectWeight = weightDialog.findViewById(R.id.btnSelectWeight);
+
+        btnSelectWeight.setOnClickListener(v -> {
+            // Update the ViewModel with the entered weight
+            String enteredWeight = editTextWeight.getText().toString();
+            // You can use the entered weight as needed
+
+            // Update the EditText in your CardView with the entered weight
+            EditText editText = requireView().findViewById(R.id.profileWeight);
+            editText.setText(enteredWeight);
+
+            weightDialog.dismiss();
+        });
+    }
+
+    private void showWeightDialog() {
+        if (weightDialog != null) {
+            weightDialog.show();
         }
     }
 
