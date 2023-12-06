@@ -2,9 +2,15 @@ package com.example.sosemergency.DataLoader;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
+import androidx.room.Update;
 
+import com.example.sosemergency.entities.Allergy;
 import com.example.sosemergency.entities.User;
+
+import java.util.List;
 
 /*
  * This interface serves as the Data Access Object (DAO) for the User entity
@@ -37,15 +43,11 @@ public interface UserLoader {
      * @param user - The User object to be inserted.
      * @return long - The row ID of the inserted user.
      */
-    @Insert
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertUser(User user);
 
-    /*
-     * Retrieves a single user from the database.
-     *
-     * @return User - The User object retrieved from the database.
-     */
-    @Query("SELECT * FROM users")
+    @Query("SELECT * from users")
     User getUser();
 
     /*
@@ -53,6 +55,15 @@ public interface UserLoader {
      */
     @Query("DELETE FROM users")
     void deleteUser();
+
+    /*
+     * Updates user information in the database.
+     *
+     * @param user - The User object with updated information.
+     */
+    @Update
+    void updateUser(User user);
+
 }
 
 

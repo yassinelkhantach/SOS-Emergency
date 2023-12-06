@@ -32,7 +32,7 @@ import java.util.Date;
 public class User {
 
     @PrimaryKey(autoGenerate = true)
-    public long id;
+    public Long id;
 
     public String name;
     public Date birthDate;
@@ -220,6 +220,7 @@ public class User {
      *
      * @return String - The string representation of the User object.
      */
+
     @Override
     public String toString() {
         return "User{" +

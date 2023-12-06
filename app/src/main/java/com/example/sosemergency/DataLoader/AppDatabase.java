@@ -3,6 +3,7 @@ package com.example.sosemergency.DataLoader;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
+import com.example.sosemergency.entities.Allergy;
 import com.example.sosemergency.entities.Contact;
 import com.example.sosemergency.entities.User;
 /*
@@ -25,7 +26,7 @@ import com.example.sosemergency.entities.User;
  *   ContactLoader contactLoader = appDatabase.contactLoader();
  *   UserLoader userLoader = appDatabase.userLoader();
  */
-@Database(entities = {Contact.class, User.class}, version = 1, exportSchema = false)
+@Database(entities = {Contact.class, User.class, Allergy.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     /*
@@ -41,4 +42,11 @@ public abstract class AppDatabase extends RoomDatabase {
      * @return UserLoader - Data Access Object for interacting with the User entity.
      */
     public abstract UserLoader userLoader();
+
+    /*
+     * Abstract method to get the Allergy DAO.
+     *
+     * @return AllergyLoader - Data Access Object for interacting with the Allergy entity.
+     */
+    public abstract AllergyLoader allergyLoader();
 }

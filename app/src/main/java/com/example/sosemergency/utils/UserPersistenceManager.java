@@ -3,6 +3,7 @@ package com.example.sosemergency.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.room.Room;
 
@@ -20,7 +21,7 @@ import com.example.sosemergency.entities.User;
  *   - registerUser: Registers a user by adding their information to the Room database.
  *   - deleteUser: Deletes all user information from the Room database.
  *   - getUser: Retrieves the user information from the Room database.
- *   - parseDate: Parses a date string in the format "dd-MM-yyyy" into a Date object.
+ *   - editUser: Edits user information in the Room database.
  */
 public class UserPersistenceManager {
 
@@ -54,22 +55,32 @@ public class UserPersistenceManager {
             @Override
             public void run() {
                 appDatabase.userLoader().insertUser(user);
+                Log.i("insertUser",user.getName()+" user inserted successfully !");
             }
         });
     }
-
+    // Edits user information in the Room database
+    public static void editUser(User user) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.userLoader().updateUser(user);
+            }
+        });
+    }
     // Deletes all user information from the Room database
     public static void deleteUser() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.userLoader().deleteUser();
+                Log.i("deleteUser","User deleted successfully");
             }
         });
     }
 
-    // Retrieves the user information from the Room database
+    // Retrieves the user allergies from the Room database
     public static User getUser() {
-       return appDatabase.userLoader().getUser();
+        return appDatabase.userLoader().getUser();
     }
 }
