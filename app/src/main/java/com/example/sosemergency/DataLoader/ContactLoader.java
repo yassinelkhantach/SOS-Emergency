@@ -2,6 +2,7 @@ package com.example.sosemergency.DataLoader;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.sosemergency.entities.Contact;
@@ -45,6 +46,15 @@ public interface ContactLoader {
      */
     @Insert
     long insertContact(Contact contact);
+
+    /*
+     * Inserts a new list of contacts into the database.
+     *
+     * @param contacts - The Contact objects to be inserted.
+     * @return void
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertContacts(Contact... contacts);
 
     /*
      * Retrieves all contacts from the database.
