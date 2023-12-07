@@ -3,6 +3,8 @@ package com.example.sosemergency;
 import android.os.Bundle;
 import android.view.Menu;
 
+import com.example.sosemergency.entities.Contact;
+import com.example.sosemergency.utils.ContactPersistenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,22 @@ public class BootstrapActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_report);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        /*
+         * This test demonstrates the usage of ContactPersistenceManager methods in the application.
+         * It initializes the Room database and adds a contact to the database for testing purposes.
+         */
+
+        // Initialize the Room database for testing
+        ContactPersistenceManager.initAppDatabase(getApplicationContext());
+
+        // Add a contact to the Room database for testing
+        ContactPersistenceManager.addContact(
+                new Contact(
+                        getResources().getStringArray(R.array.contact_name)[0],
+                        getResources().getStringArray(R.array.contact_phone)[0]
+                )
+        );
     }
 
     @Override
