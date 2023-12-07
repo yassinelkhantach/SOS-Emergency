@@ -5,12 +5,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
-import androidx.room.Update;
 
-import com.example.sosemergency.entities.Allergy;
 import com.example.sosemergency.entities.User;
-
-import java.util.List;
 
 /*
  * This interface serves as the Data Access Object (DAO) for the User entity
@@ -61,8 +57,8 @@ public interface UserLoader {
      *
      * @param user - The User object with updated information.
      */
-    @Update
-    void updateUser(User user);
+    @Query("UPDATE users SET country = :country, bloodType = :bloodType, weight = :weight, height = :height, birthDate = :birthDate, name = :name WHERE id = :id")
+    void updateUser(Long id, String name, Long birthDate, double height, double weight, String bloodType, String country);
 
 }
 

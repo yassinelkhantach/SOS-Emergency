@@ -25,13 +25,10 @@ import com.example.sosemergency.entities.User;
  */
 public class UserPersistenceManager {
 
-    // The application context used for database initialization
     private static Context appContext;
-
-    // An instance of the Room database.
     private static AppDatabase appDatabase;
+    private static User globalUser; // Added variable to store the global user
 
-    // Initialize the database in a static method
     public static AppDatabase initAppDatabase(Context context) {
         if (appDatabase == null) {
             appContext = context;
@@ -40,9 +37,7 @@ public class UserPersistenceManager {
         return appDatabase;
     }
 
-    // Registers a user by adding their information to the Room database
     public static void registerUser(User user) {
-        // Create a ContentValues object to store contact data
         ContentValues values = new ContentValues();
         values.put(UserDatabaseContract.ContactEntry.COLUMN_NAME, user.getName());
         values.put(UserDatabaseContract.ContactEntry.COLUMN_BIRTH_DATE, DateConverterUtil.toTimestamp(user.getBirthDate()));
@@ -50,37 +45,46 @@ public class UserPersistenceManager {
         values.put(UserDatabaseContract.ContactEntry.COLUMN_BLOOD_TYPE, user.getBloodType());
         values.put(UserDatabaseContract.ContactEntry.COLUMN_HEIGHT, user.getHeight());
         values.put(UserDatabaseContract.ContactEntry.COLUMN_WEIGHT, user.getWeight());
-        // Insert the contact into the Room database
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.userLoader().insertUser(user);
-                Log.i("insertUser",user.getName()+" user inserted successfully !");
+                // Retrieve the user with the actual ID
+                globalUser = appDatabase.userLoader().getUser();
+                Log.i("registerUser", globalUser.getName() + " user registered successfully !");
             }
         });
     }
-    // Edits user information in the Room database
+
     public static void editUser(User user) {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                appDatabase.userLoader().updateUser(user);
+                appDatabase.userLoader().updateUser(user.getId(),
+                        user.getName(),
+                        DateConverterUtil.toTimestamp(user.getBirthDate()),
+                        user.getHeight(),
+                        user.getWeight(),
+                        user.getBloodType(),
+                        user.getCountry());
+                globalUser = user; // Update the stored user
             }
         });
     }
-    // Deletes all user information from the Room database
+
     public static void deleteUser() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.userLoader().deleteUser();
-                Log.i("deleteUser","User deleted successfully");
+                globalUser = null; // Remove the stored user on deletion
+                Log.i("deleteUser", "User deleted successfully");
             }
         });
     }
 
-    // Retrieves the user allergies from the Room database
+    // Retrieve the stored user without querying the database
     public static User getUser() {
-        return appDatabase.userLoader().getUser();
+        return globalUser;
     }
 }
