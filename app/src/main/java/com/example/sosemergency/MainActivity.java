@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.sosemergency.ui.registration.UserRegistrationActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button button;
@@ -18,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent reportIntent = new Intent(MainActivity.this, BootstrapActivity.class);
-                startActivity(reportIntent);
+                Intent registrationIntent = new Intent(MainActivity.this, UserRegistrationActivity.class);
+                startActivity(registrationIntent);
             }
         });
     }
