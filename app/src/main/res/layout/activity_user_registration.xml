@@ -83,6 +83,7 @@
                         android:textStyle="bold"/>
 
                     <EditText
+                        android:id="@+id/registrationFullName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/register_check"
@@ -99,6 +100,7 @@
                         android:textStyle="bold"/>
 
                     <EditText
+                        android:id="@+id/registrationDateOfBirth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="date"
@@ -116,6 +118,7 @@
                         android:textStyle="bold"/>
 
                     <EditText
+                        android:id="@+id/registrationCountry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/register_country"
@@ -126,6 +129,7 @@
                         android:layout_height="60dp"/>
 
                     <ImageView
+                        android:id="@+id/registrationDot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/register_dot"

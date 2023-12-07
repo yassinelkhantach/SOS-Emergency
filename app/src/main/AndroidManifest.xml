@@ -39,7 +39,7 @@
         <activity
             android:name=".ui.registration.UserRegistrationActivity"
             android:exported="false"
-            android:theme="@style/Theme.SOSEmergency" />
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".ui.registration.ContactRegistrationActivity"
             android:exported="false"
