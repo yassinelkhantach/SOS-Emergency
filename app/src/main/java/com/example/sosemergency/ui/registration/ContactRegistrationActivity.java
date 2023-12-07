@@ -11,14 +11,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sosemergency.R;
+import com.example.sosemergency.ui.contact.ContactModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactRegistrationActivity extends AppCompatActivity {
     private static final int RESULT_PICK_CONTACT = 1;
 
     ImageView addIcon;
     TextView textChoose;
+    RecyclerView contactRecyclerView;
+    ContactAdapter contactAdapter;
+
+    List<ContactModel> contactList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +37,12 @@ public class ContactRegistrationActivity extends AppCompatActivity {
 
         addIcon = findViewById(R.id.addIcon);
         textChoose = findViewById(R.id.textChoose);
+        contactRecyclerView = findViewById(R.id.contactRecyclerView);
+
+        // Initialize your RecyclerView adapter (assuming you have a custom adapter)
+        contactAdapter = new ContactAdapter(contactList);
+        contactRecyclerView.setAdapter(contactAdapter);
+        contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         addIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,19 +68,30 @@ public class ContactRegistrationActivity extends AppCompatActivity {
         }
     }
 
-
     private void contactPicked(Intent data) {
         Cursor cursor = null;
 
         try {
-            String phoneNo = null;
+            String contactName = null;
+            String contactPhone = null;
             Uri uri = data.getData();
             cursor = getContentResolver().query(uri, null, null, null, null);
 
             if (cursor != null && cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
                 int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                phoneNo = cursor.getString(phoneIndex);
-                textChoose.setText(phoneNo);
+
+                contactName = cursor.getString(nameIndex);
+                contactPhone = cursor.getString(phoneIndex);
+
+                // Create a new ContactModel
+                ContactModel contact = new ContactModel(contactName, contactPhone);
+
+                // Add the picked contact to the list
+                contactList.add(contact);
+
+                // Notify the adapter of the data set change
+                contactAdapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
             e.printStackTrace();
