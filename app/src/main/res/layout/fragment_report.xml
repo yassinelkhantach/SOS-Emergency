@@ -59,33 +59,33 @@
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:width="0dp"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/report_accident_button"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Accident"
                 android:width="0dp"
-                android:button="@null"
-                android:drawableTop="@drawable/ic_car_accident_45dp"
-                android:drawableTint="@color/primary"
-                android:gravity="center" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/report_accident_icon_text"
-                android:textColor="@color/primary"
-                android:gravity="center"/>
-        </LinearLayout>
+                <RadioButton
+                    android:id="@+id/report_accident_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Accident"
+                    android:width="0dp"
+                    android:button="@null"
+                    android:drawableTop="@drawable/ic_car_accident_45dp"
+                    android:drawableTint="@color/primary"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/report_accident_icon_text"
+                    android:textColor="@color/primary"
+                    android:gravity="center"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -216,16 +216,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_medium"
+        android:background="@drawable/report_edit_text_background_border"
+
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/report_search_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_width="69dp"
+            android:layout_height="44dp"
+            android:layout_weight="3"
             android:width="0dp"
-            android:hint="Where is the emergency?"
-            android:inputType="text"/>
+            android:background="@null"
+            android:drawablePadding="@dimen/spacing_medium"
+            android:drawableLeft="@drawable/baseline_location_searching_24"
+            android:drawableTint="@color/primary"
+            android:hint="@string/report_emergency_edit_text"
+            android:inputType="text"
+            android:textColorHint="@color/primary_light"
+            android:textSize="@dimen/text_size_medium" />
 
         <Button
             android:id="@+id/report_location_button"
