@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +17,13 @@ import java.util.List;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
     private List<ContactModel> contactList;
+    private View passIcon;
+    private View addIcon;
 
-    public ContactAdapter(List<ContactModel> contactList) {
+    public ContactAdapter(List<ContactModel> contactList, View passIcon, View addIcon) {
         this.contactList = contactList;
+        this.passIcon = passIcon;
+        this.addIcon = addIcon;
     }
 
     @NonNull
@@ -69,6 +74,22 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public void removeContact(int position) {
         contactList.remove(position);
         notifyItemRemoved(position);
+        updateIconsVisibility();
+    }
+    private void updateIconsVisibility() {
+        if (contactList.size() <= 1) {
+            // If no contacts or only one contact is chosen, hide the "Select" icon and show the "Add" icon
+            passIcon.setVisibility(View.GONE);
+            addIcon.setVisibility(View.VISIBLE);
+        } else if (contactList.size() >= 1 && contactList.size() < 4) {
+            // If one or more than one contact is chosen but less than 4, show both the "Add" icon and the "Select" icon
+            addIcon.setVisibility(View.VISIBLE);
+            passIcon.setVisibility(View.VISIBLE);
+        } else if (contactList.size() == 4) {
+            // If 4 contacts are chosen, hide the "Add" icon and show the "Select" icon
+            addIcon.setVisibility(View.GONE);
+            passIcon.setVisibility(View.VISIBLE);
+        }
     }
 }
 

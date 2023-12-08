@@ -24,6 +24,7 @@ public class ContactRegistrationActivity extends AppCompatActivity {
     private static final int RESULT_PICK_CONTACT = 1;
 
     ImageView addIcon;
+    ImageView passIcon;
     TextView textChoose;
     RecyclerView contactRecyclerView;
     ContactAdapter contactAdapter;
@@ -39,8 +40,10 @@ public class ContactRegistrationActivity extends AppCompatActivity {
         textChoose = findViewById(R.id.textChoose);
         contactRecyclerView = findViewById(R.id.contactRecyclerView);
 
+        passIcon = findViewById(R.id.passIcon);
+
         // Initialize your RecyclerView adapter (assuming you have a custom adapter)
-        contactAdapter = new ContactAdapter(contactList);
+        contactAdapter = new ContactAdapter(contactList, passIcon, addIcon);
         contactRecyclerView.setAdapter(contactAdapter);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -104,6 +107,13 @@ public class ContactRegistrationActivity extends AppCompatActivity {
                     // Display a toast message indicating that the contact is already picked
                     Toast.makeText(this, "This contact is already picked", Toast.LENGTH_SHORT).show();
                 }
+            }
+            if (contactList.size() >= 1 && contactList.size() < 4) {
+                // If one or more than one contact is chosen but less than 4, show both the "Add" icon and the "Select" icon
+                passIcon.setVisibility(View.VISIBLE);
+            } else if (contactList.size() == 4) {
+                addIcon.setVisibility(View.GONE);
+                passIcon.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             e.printStackTrace();
