@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -16,15 +18,20 @@ import com.example.sosemergency.R;
 public class UserRegistrationActivity extends AppCompatActivity {
     EditText fullName;
     EditText dateOfBirth;
-    EditText Country;
+    AutoCompleteTextView country;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
         fullName = findViewById(R.id.registrationFullName);
         dateOfBirth = findViewById(R.id.registrationDateOfBirth);
-        Country = findViewById(R.id.registrationCountry);
+        country = findViewById(R.id.registrationCountry);
         ImageView dotIcon = findViewById(R.id.registrationDot);
+
+        // Set up an array of country names
+        String[] countries = {"Morocco", "France", "England"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, countries);
+        country.setAdapter(adapter);
 
         // Set OnClickListener for the dot icon
         dotIcon.setOnClickListener(new View.OnClickListener() {
@@ -44,11 +51,10 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
     // Helper method to check if all required fields are filled
     private boolean isFieldsFilled() {
-        String Name = fullName.getText().toString();
+        String name = fullName.getText().toString();
         String dob = dateOfBirth.getText().toString();
-        String country = Country.getText().toString();
-
+        String selectedCountry = country.getText().toString();
         // Check if any of the fields is empty
-        return !TextUtils.isEmpty(Name) && !TextUtils.isEmpty(dob) && !TextUtils.isEmpty(country);
+        return !TextUtils.isEmpty(name) && !TextUtils.isEmpty(dob) && !TextUtils.isEmpty(selectedCountry);
     }
 }

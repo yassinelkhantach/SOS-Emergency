@@ -117,7 +117,7 @@
                         android:text="Country"
                         android:textStyle="bold"/>
 
-                    <EditText
+                    <AutoCompleteTextView
                         android:id="@+id/registrationCountry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
