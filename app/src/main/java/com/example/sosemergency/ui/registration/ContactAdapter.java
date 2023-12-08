@@ -33,6 +33,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         ContactModel contact = contactList.get(position);
         holder.bind(contact);
+
+        // Set onClickListener for the delete button
+        holder.deleteContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeContact(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -56,6 +64,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             contactNameTextView.setText(contact.getName());
             contactPhoneTextView.setText(contact.getPhone());
         }
+    }
+
+    public void removeContact(int position) {
+        contactList.remove(position);
+        notifyItemRemoved(position);
     }
 }
 

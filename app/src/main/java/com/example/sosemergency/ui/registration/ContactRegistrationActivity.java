@@ -47,8 +47,14 @@ public class ContactRegistrationActivity extends AppCompatActivity {
         addIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(in, RESULT_PICK_CONTACT);
+                // Check if the user has already picked two contacts
+                if (contactList.size() < 4) {
+                    Intent in = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                    startActivityForResult(in, RESULT_PICK_CONTACT);
+                } else {
+                    // Display a toast message indicating that the user can only pick two contacts
+                    Toast.makeText(ContactRegistrationActivity.this, "You have already picked four contacts", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -84,14 +90,20 @@ public class ContactRegistrationActivity extends AppCompatActivity {
                 contactName = cursor.getString(nameIndex);
                 contactPhone = cursor.getString(phoneIndex);
 
-                // Create a new ContactModel
-                ContactModel contact = new ContactModel(contactName, contactPhone);
+                // Check if the contact already exists in the list
+                if (!isContactAlreadyPicked(contactName, contactPhone)) {
+                    // Create a new ContactModel
+                    ContactModel contact = new ContactModel(contactName, contactPhone);
 
-                // Add the picked contact to the list
-                contactList.add(contact);
+                    // Add the picked contact to the list
+                    contactList.add(contact);
 
-                // Notify the adapter of the data set change
-                contactAdapter.notifyDataSetChanged();
+                    // Notify the adapter of the data set change
+                    contactAdapter.notifyItemInserted(contactList.size() - 1);
+                } else {
+                    // Display a toast message indicating that the contact is already picked
+                    Toast.makeText(this, "This contact is already picked", Toast.LENGTH_SHORT).show();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,5 +112,20 @@ public class ContactRegistrationActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
+    }
+
+    // Helper method to check if the contact is already picked
+    private boolean isContactAlreadyPicked(String name, String phone) {
+        for (ContactModel contact : contactList) {
+            if (contact.getName().equals(name) && contact.getPhone().equals(phone)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Method to remove a contact when the delete button is clicked
+    private void removeContact(int position) {
+        contactAdapter.removeContact(position);
     }
 }
