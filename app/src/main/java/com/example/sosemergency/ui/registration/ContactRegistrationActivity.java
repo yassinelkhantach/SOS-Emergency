@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sosemergency.BootstrapActivity;
+import com.example.sosemergency.MainActivity;
 import com.example.sosemergency.R;
 import com.example.sosemergency.ui.contact.ContactModel;
 
@@ -58,6 +60,12 @@ public class ContactRegistrationActivity extends AppCompatActivity {
                     // Display a toast message indicating that the user can only pick two contacts
                     Toast.makeText(ContactRegistrationActivity.this, "You have already picked four contacts", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        passIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    startActivity(new Intent(ContactRegistrationActivity.this, BootstrapActivity.class));
             }
         });
     }
