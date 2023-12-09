@@ -8,12 +8,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,28 +32,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sosemergency.R;
 import com.example.sosemergency.databinding.FragmentContactBinding;
+import com.example.sosemergency.entities.Contact;
+import com.example.sosemergency.utils.ContactPersistenceManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContactFragment extends Fragment {
-
     // Constants for request codes
     private static final int REQUEST_READ_CONTACTS_PERMISSION = 1;
     private static final int REQUEST_CONTACT = 2;
-
+    //max N contact value
+    private int MAX_CONTACT_ALLOWED;
     // Intent to pick contacts
     final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-
     // View binding
     private FragmentContactBinding binding;
-
     // List to store contact models
     private ArrayList<ContactModel> contactsModels = new ArrayList<>();
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //Change ActionBar title
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_contact);
+        //max N contact value
+        MAX_CONTACT_ALLOWED = getResources().getInteger(R.integer.max_contacts_allowed);
 
         // Initialize ViewModel
         ContactViewModel homeViewModel =
@@ -64,9 +70,11 @@ public class ContactFragment extends Fragment {
         Contact_RecyclerViewAdapter adapter = new Contact_RecyclerViewAdapter(this.getContext(), contactsModels, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        // Add new contact button click listener
+        // Add new contact button click listener and set the text with max contact allowed value
         CardView addNewContactCard = binding.getRoot().findViewById(R.id.addNewContactCard);
-        // Check if the max 4 contacts reached and disable the button
+        TextView addNewContactCardText = addNewContactCard.findViewById(R.id.maxContactText);
+        addNewContactCardText.setText(getString(R.string.max_contact_contact, MAX_CONTACT_ALLOWED));
+        // Check if the max N contacts reached and disable the button
         toggleAddNewContactCardStatus();
         addNewContactCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +84,6 @@ public class ContactFragment extends Fragment {
         });
         return root;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -85,9 +92,9 @@ public class ContactFragment extends Fragment {
 
     // Method to handle adding a new contact
     public void onAddNewContact() {
-        // Check if the max 4 contacts reached
-        if (contactsNumber() == 4) {
-            displayToastMessage("You can only add 4 trusted contacts");
+        // Check if the max N contacts reached
+        if (contactsNumber() == MAX_CONTACT_ALLOWED) {
+            displayToastMessage("You can only add "+MAX_CONTACT_ALLOWED+" trusted contacts");
             return;
         }
         // Check for contacts permission
@@ -100,9 +107,22 @@ public class ContactFragment extends Fragment {
     }
     //delete contact
     public void onDeleteContact(int position){
-        Log.d("Delete contact test", "onDeleteContact: position="+position);
-        contactsModels.remove(position);
-        updateAdapter();
+        ContactModel contactToDelete = contactsModels.get(position);
+        Log.d("delete contact","delete contact with phone number "+contactToDelete.getPhone());
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                ContactPersistenceManager.deleteContact(contactToDelete.getPhone());
+                contactsModels.remove(position);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateAdapter();
+                        displayToastMessage(contactToDelete.getName()+" deleted from your trusted contacts");
+                    }
+                });
+            }
+        });
     }
     public boolean hasContactsPermission()
     {
@@ -208,23 +228,23 @@ public class ContactFragment extends Fragment {
                 return;
             }
         }
+        // Add the new ContactModel to the db
+        ContactPersistenceManager.addContact(ContactAdapter.modelToEntity(newContact));
         // Add the new ContactModel to the list
         contactsModels.add(newContact);
         // Notify the adapter about the data change
         updateAdapter();
+        //display message
         displayToastMessage(newContact.getName() + " added to your trusted contacts");
     }
-
     // Method to display toast messages
     public void displayToastMessage(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
-
     // Method to get the number of contacts
     public int contactsNumber() {
         return this.contactsModels.size();
     }
-
     // Method to update the adapter
     public void updateAdapter() {
         RecyclerView recyclerView = binding.getRoot().findViewById(R.id.contactRecyclerView);
@@ -237,18 +257,23 @@ public class ContactFragment extends Fragment {
     }
     // Set up initial contact models from resources
     public void setContactsModels() {
-        String[] contactsName = getResources().getStringArray(R.array.contact_name);
-        String[] contactsPhone = getResources().getStringArray(R.array.contact_phone);
+        AsyncTask.execute(new Runnable(){
+            @Override
+            public void run() {
+                List<Contact> contacts = ContactPersistenceManager.getContacts();
+                if (!contacts.isEmpty()) {
+                    for (Contact contact:contacts){
+                        contactsModels.add(ContactAdapter.entityToModel(contact));
+                    }
+                }
+            }
+        });
 
-        for (int i = 0; i < contactsName.length; i++) {
-            contactsModels.add(new ContactModel(contactsName[i], contactsPhone[i]));
-        }
     }
-
-    // Check if the max 4 contacts reached and disable the button
+    // Check if the max N contacts reached and disable the button
     public void toggleAddNewContactCardStatus() {
         CardView addNewContactCard = binding.getRoot().findViewById(R.id.addNewContactCard);
-        addNewContactCard.setEnabled(contactsNumber() != 4);
+        addNewContactCard.setEnabled(contactsNumber() != MAX_CONTACT_ALLOWED);
+        addNewContactCard.setAlpha(contactsNumber() != MAX_CONTACT_ALLOWED?1F:0.7F);
     }
-
 }
