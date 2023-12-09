@@ -414,9 +414,17 @@ public class ProfileFragment extends Fragment {
     private void showHeightDialog() {
         // Check if the height selection dialog is not null
         if (heightDialog != null) {
-            // Show the height selection dialog
+            // Observe the height LiveData
+            notificationsViewModel.getHeight().observe(getViewLifecycleOwner(), currentHeight -> {
+                // Set the current weight in the EditText
+                EditText editTextHeight = heightDialog.findViewById(R.id.editTextHeight);
+                editTextHeight.setText(currentHeight);
+            });
+
+            // Show the weight selection dialog
             heightDialog.show();
         }
+
     }
 
     /**
@@ -456,10 +464,18 @@ public class ProfileFragment extends Fragment {
     private void showWeightDialog() {
         // Check if the weight selection dialog is not null
         if (weightDialog != null) {
+            // Observe the weight LiveData
+            notificationsViewModel.getWeight().observe(getViewLifecycleOwner(), currentWeight -> {
+                // Set the current weight in the EditText
+                EditText editTextWeight = weightDialog.findViewById(R.id.editTextWeight);
+                editTextWeight.setText(currentWeight);
+            });
+
             // Show the weight selection dialog
             weightDialog.show();
         }
     }
+
 
     /**
      * Toggle the allergies edit mode.

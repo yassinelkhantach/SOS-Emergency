@@ -15,12 +15,20 @@ public class ProfileViewModel extends ViewModel {
     // MutableLiveData to store the user's blood type
     private final MutableLiveData<String> bloodType; // Added for blood type
 
+    // MutableLiveData to store the user's height
+    private final MutableLiveData<String> height;
+
+    // MutableLiveData to store the user's weight
+    private final MutableLiveData<String> weight;
+
     /**
      * Constructor to initialize MutableLiveData instances.
      */
     public ProfileViewModel() {
         mText = new MutableLiveData<>();
         bloodType = new MutableLiveData<>();
+        height = new MutableLiveData<>();
+        weight = new MutableLiveData<>();
     }
 
     /**
@@ -57,5 +65,41 @@ public class ProfileViewModel extends ViewModel {
      */
     public void setBloodType(String newBloodType) {
         bloodType.setValue(newBloodType);
+    }
+
+    /**
+     * Getter method for observing the user's height.
+     *
+     * @return LiveData containing the user's height.
+     */
+    public LiveData<String> getHeight() {
+        return height;
+    }
+
+    /**
+     * Setter method to update the user's height.
+     *
+     * @param newHeight The new height to set.
+     */
+    public void setHeight(String newHeight) {
+        height.setValue(newHeight);
+    }
+
+    /**
+     * Getter method for observing the user's weight.
+     *
+     * @return LiveData containing the user's weight.
+     */
+    public LiveData<String> getWeight() {
+        return weight;
+    }
+
+    /**
+     * Setter method to update the user's weight.
+     *
+     * @param newWeight The new weight to set.
+     */
+    public void setWeight(String newWeight) {
+        weight.setValue(newWeight);
     }
 }
