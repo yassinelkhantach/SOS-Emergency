@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * ProfileFragment - Fragment for displaying and editing user profile information.
@@ -236,8 +238,23 @@ public class ProfileFragment extends Fragment {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
+        // If profileDate has a valid date, use it as the initial date for the DatePicker
+        String dateString = profileDate.getText().toString();
+        if (!TextUtils.isEmpty(dateString)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            try {
+                Date date = dateFormat.parse(dateString);
+                cal.setTime(date);
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH);
+                day = cal.get(Calendar.DAY_OF_MONTH);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         // Create a DatePickerDialog with a custom theme and set the date listener
-        DatePickerDialog dialog = new DatePickerDialog(getActivity(),R.style.DatePickerTheme, mDateSetListener,year,month,day);
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), R.style.DatePickerTheme, mDateSetListener, year, month, day);
 
         // Set the background of the dialog to white
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
