@@ -2,7 +2,6 @@ package com.example.sosemergency.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,6 +13,7 @@ import com.example.sosemergency.entities.Contact;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /*
  * This class manages the persistence of Contact entities in the Room database.
@@ -47,7 +47,7 @@ public class ContactPersistenceManager {
             ContentValues values = new ContentValues();
             values.put(ContactDatabaseContract.ContactEntry.COLUMN_NAME, contact.getName());
             values.put(ContactDatabaseContract.ContactEntry.COLUMN_PHONE_NUMBER, contact.getPhoneNumber());
-            AsyncTask.execute(new Runnable() {
+            ThreadPoolManager.execute(new Runnable() {
                 @Override
                 public void run() {
                     appDatabase.contactLoader().insertContact(contact);
@@ -67,7 +67,7 @@ public class ContactPersistenceManager {
         // Convert the list of contacts to an array for batch insertion
         Contact[] contactsArray = selectedContacts.toArray(new Contact[0]);
         // AsyncTask for background processing
-        AsyncTask.execute(new Runnable() {
+        ThreadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -85,11 +85,25 @@ public class ContactPersistenceManager {
     // Retrieves a list of all contacts from the Room database
     public static List<Contact> getContacts() {
         try {
-            // the list obtained from the Room database
-            return appDatabase.contactLoader().getAllContacts();
+            // Using Callable directly
+            Callable<List<Contact>> callable = new Callable<List<Contact>>() {
+                @Override
+                public List<Contact> call() {
+                    try {
+                        // the list obtained from the Room database
+                        return appDatabase.contactLoader().getAllContacts();
+                    } catch (Exception e) {
+                        Log.e("getContacts", "Error retrieving contacts: " + e.getMessage());
+                        return new ArrayList<>(); // Return an empty list or handle the error accordingly
+                    }
+                }
+            };
+
+            // Execute the task in the background
+            return ThreadPoolManager.executeDatabaseQuerySync(callable);
         } catch (Exception e) {
             Log.e("getContacts", "Error retrieving contacts: " + e.getMessage());
-            showToast("There are no contacts !");
+            showToast("There was an error retrieving contacts!");
             return new ArrayList<>(); // Return an empty list or handle the error accordingly
         }
     }
@@ -97,7 +111,7 @@ public class ContactPersistenceManager {
     // Deletes all contacts from the Room database
     public static void deleteContacts() {
         try {
-            AsyncTask.execute(new Runnable() {
+            ThreadPoolManager.execute(new Runnable() {
                 @Override
                 public void run() {
                     appDatabase.contactLoader().clearAllContacts();
@@ -112,7 +126,12 @@ public class ContactPersistenceManager {
     // Deletes a specific contact from the Room database based on the phone number
     public static void deleteContact(String phoneNumber) {
         try {
-            appDatabase.contactLoader().deleteContact(phoneNumber);
+            ThreadPoolManager.execute(new Runnable() {
+                @Override
+                public void run() {
+                    appDatabase.contactLoader().deleteContact(phoneNumber);
+                }
+            });
         } catch (Exception e) {
             Log.e("deleteContact", "Error deleting contact: " + e.getMessage());
             showToast("Error: Cannot delete this contact");
