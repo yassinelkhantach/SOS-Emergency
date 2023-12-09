@@ -354,10 +354,28 @@ public class ProfileFragment extends Fragment {
     private void showBloodTypeDialog() {
         // Check if the blood type dialog is not null
         if (bloodTypeDialog != null) {
+            // Get the default blood type from your ViewModel or any other source
+            String defaultBloodType = String.valueOf(notificationsViewModel.getBloodType()); // Adjust this based on your ViewModel
+
+            // Set the default blood type in the spinner
+            if (defaultBloodType != null) {
+                Spinner spinnerBloodType = bloodTypeDialog.findViewById(R.id.spinnerBloodType);
+                ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) spinnerBloodType.getAdapter();
+
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    if (defaultBloodType.equals(adapter.getItem(i))) {
+                        spinnerBloodType.setSelection(i);
+                        break;
+                    }
+                }
+            }
+
             // Show the blood type selection dialog
             bloodTypeDialog.show();
         }
     }
+
+
 
     /**
      * Set up and initialize the height selection dialog.
