@@ -19,6 +19,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
     EditText fullName;
     EditText dateOfBirth;
     AutoCompleteTextView country;
+
+    ImageView dotIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +28,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         fullName = findViewById(R.id.registrationFullName);
         dateOfBirth = findViewById(R.id.registrationDateOfBirth);
         country = findViewById(R.id.registrationCountry);
-        ImageView dotIcon = findViewById(R.id.registrationDot);
+        dotIcon = findViewById(R.id.registrationDot);
 
         // Set up an array of country names
         String[] countries = {"Morocco", "France", "England"};

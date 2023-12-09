@@ -19,11 +19,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     private List<ContactModel> contactList;
     private View passIcon;
     private View addIcon;
+    private View dotIcon;
 
-    public ContactAdapter(List<ContactModel> contactList, View passIcon, View addIcon) {
+    public ContactAdapter(List<ContactModel> contactList, View passIcon, View addIcon, View dotIcon) {
         this.contactList = contactList;
         this.passIcon = passIcon;
         this.addIcon = addIcon;
+        this.dotIcon = dotIcon;
     }
 
     @NonNull
@@ -81,14 +83,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             // If no contacts or only one contact is chosen, hide the "Select" icon and show the "Add" icon
             passIcon.setVisibility(View.GONE);
             addIcon.setVisibility(View.VISIBLE);
+            dotIcon.setVisibility(View.VISIBLE);
         } else if (contactList.size() >= 1 && contactList.size() < 4) {
             // If one or more than one contact is chosen but less than 4, show both the "Add" icon and the "Select" icon
             addIcon.setVisibility(View.VISIBLE);
             passIcon.setVisibility(View.VISIBLE);
+            dotIcon.setVisibility(View.GONE);
         } else if (contactList.size() == 4) {
             // If 4 contacts are chosen, hide the "Add" icon and show the "Select" icon
             addIcon.setVisibility(View.GONE);
             passIcon.setVisibility(View.VISIBLE);
+            dotIcon.setVisibility(View.GONE);
         }
     }
 }

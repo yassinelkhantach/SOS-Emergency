@@ -32,6 +32,7 @@ public class ContactRegistrationActivity extends AppCompatActivity {
     ContactAdapter contactAdapter;
 
     List<ContactModel> contactList = new ArrayList<>();
+    ImageView dotIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,12 @@ public class ContactRegistrationActivity extends AppCompatActivity {
         addIcon = findViewById(R.id.addIcon);
         textChoose = findViewById(R.id.textChoose);
         contactRecyclerView = findViewById(R.id.contactRecyclerView);
+        ImageView dotIcon = findViewById(R.id.registrationDot);
 
         passIcon = findViewById(R.id.passIcon);
 
         // Initialize your RecyclerView adapter (assuming you have a custom adapter)
-        contactAdapter = new ContactAdapter(contactList, passIcon, addIcon);
+        contactAdapter = new ContactAdapter(contactList, passIcon, addIcon, dotIcon);
         contactRecyclerView.setAdapter(contactAdapter);
         contactRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -66,6 +68,12 @@ public class ContactRegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                     startActivity(new Intent(ContactRegistrationActivity.this, BootstrapActivity.class));
+            }
+        });
+        dotIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ContactRegistrationActivity.this, UserRegistrationActivity.class));
             }
         });
     }
@@ -119,9 +127,11 @@ public class ContactRegistrationActivity extends AppCompatActivity {
             if (contactList.size() >= 1 && contactList.size() < 4) {
                 // If one or more than one contact is chosen but less than 4, show both the "Add" icon and the "Select" icon
                 passIcon.setVisibility(View.VISIBLE);
+                dotIcon.setVisibility(View.GONE);
             } else if (contactList.size() == 4) {
                 addIcon.setVisibility(View.GONE);
                 passIcon.setVisibility(View.VISIBLE);
+                addIcon.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
