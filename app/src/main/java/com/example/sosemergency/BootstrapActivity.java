@@ -43,7 +43,7 @@ public class BootstrapActivity extends AppCompatActivity {
 
         // Initialize the Room database for testing
         ContactPersistenceManager.initAppDatabase(getApplicationContext());
-
+        ContactPersistenceManager.deleteContacts();
         // Add a contact to the Room database for testing
         ContactPersistenceManager.addContact(
                 new Contact(
