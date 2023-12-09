@@ -7,7 +7,7 @@
     <string name="title_profile">Profile</string>
     <string name="main_button_text">Go to Home page</string>
     <string name="description_contact">Manage your trusted circle for quick and easy SOS alerts</string>
-    <string name="max_contact_contact">max 4 contacts</string>
+    <string name="max_contact_contact">Max %1$d contacts</string>
     <string name="add_new_contact">Add new</string>
     <string name="name_placeholder_contact">Trusted Contact</string>
     <string name="phone_placeholder_contact">+212600000000</string>
