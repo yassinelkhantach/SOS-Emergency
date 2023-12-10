@@ -5,6 +5,6 @@
         android:icon="@drawable/ic_settings_black_24dp"
         app:iconTint="@color/white"
         app:showAsAction="ifRoom"
-        android:title="Settings" />
+        android:title="@string/title_settings"/>
 
 </menu>
