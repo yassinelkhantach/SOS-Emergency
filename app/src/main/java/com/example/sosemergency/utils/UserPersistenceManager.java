@@ -8,7 +8,12 @@ import androidx.room.Room;
 
 import com.example.sosemergency.DataLoader.AppDatabase;
 import com.example.sosemergency.DataLoader.UserDatabaseContract;
+import com.example.sosemergency.entities.Contact;
 import com.example.sosemergency.entities.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 /*
  * This class manages the persistence of User entities in the Room database.
@@ -26,7 +31,7 @@ public class UserPersistenceManager {
 
     private static Context appContext;
     private static AppDatabase appDatabase;
-    private static User globalUser; // Added variable to store the global user
+    private static User globalUser = null; // Added variable to store the global user
 
     public static AppDatabase initAppDatabase(Context context) {
         if (appDatabase == null) {
@@ -84,11 +89,32 @@ public class UserPersistenceManager {
 
     // Retrieve the stored user without querying the database
     public static User getUser() {
-        return globalUser;
+        if(globalUser != null){
+            return globalUser;
+        }else {
+            try {
+                Callable<User> callable = new Callable<User>() {
+                    @Override
+                    public User call() {
+                        try {
+                            globalUser = appDatabase.userLoader().getUser();
+                            return globalUser;
+                        } catch (Exception e) {
+                            Log.e("GET USER", "Error retrieving user: " + e.getMessage());
+                            return null; // Return an empty list or handle the error accordingly
+                        }
+                    }
+                };
+                return ThreadPoolManager.executeDatabaseQuerySync(callable);
+            } catch (Exception e) {
+                Log.e("GET USER", "Error retrieving user: " + e.getMessage());
+                return null; // Return an empty list or handle the error accordingly
+            }
+        }
     }
 
     // Check if there is a user registered in the database
     public static boolean exists() {
-        return globalUser != null;
+        return getUser() != null;
     }
 }
