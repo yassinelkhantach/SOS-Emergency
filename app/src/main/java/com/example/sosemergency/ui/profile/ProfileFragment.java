@@ -36,6 +36,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.sosemergency.MainActivity;
 import com.example.sosemergency.R;
 import com.example.sosemergency.databinding.FragmentProfileBinding;
+import com.example.sosemergency.entities.User;
+import com.example.sosemergency.utils.DateConverterUtil;
+import com.example.sosemergency.utils.UserPersistenceManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -122,6 +125,11 @@ public class ProfileFragment extends Fragment {
         final CardView profileBloodCard = binding.profileBloodCard;
         final CardView profileHeightCard = binding.profileHeightCard;
         final CardView profileWeightCard = binding.profileWeightCard;
+
+        //initialize User Informations
+        profileFullName.setText(UserPersistenceManager.getUser().getName().toString());
+        profileBD.setText(DateConverterUtil.formatDateToString(UserPersistenceManager.getUser().getBirthDate()));
+        profileAge.setText(String.valueOf(calculateAge(UserPersistenceManager.getUser().getBirthDate(),new Date())));
 
         // Initialize the allergies
         appleAllergie = binding.appleAllergie;
@@ -249,6 +257,12 @@ public class ProfileFragment extends Fragment {
         // Show the edit icon and hide the save icon
         editIcon.setVisibility(View.VISIBLE);
         saveIcon.setVisibility(View.GONE);
+
+        // save editable user informations
+        User editableUser = (UserPersistenceManager.getUser());
+        editableUser.setName(modifiedFullName);
+        editableUser.setBirthDate(DateConverterUtil.parseDate(modifiedDOB));
+        UserPersistenceManager.editUser(editableUser);
     }
 
     /**

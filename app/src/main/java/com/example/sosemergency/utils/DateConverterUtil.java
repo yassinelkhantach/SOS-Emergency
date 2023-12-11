@@ -55,4 +55,17 @@ public class DateConverterUtil {
             return null;
         }
     }
+
+    /*
+     * Parses a date object into a string
+     *
+     * @param date - The Date object to be converted.
+     * @return String - The Long timestamp converted from the Date object.
+     */
+    public static String formatDateToString(Date date) {
+        // Specify the desired date format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        // Format the date and return the result
+        return dateFormat.format(date);
+    }
 }

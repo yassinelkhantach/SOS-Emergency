@@ -1,14 +1,19 @@
 package com.example.sosemergency.ui.registration;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,6 +23,12 @@ import com.example.sosemergency.R;
 import com.example.sosemergency.entities.User;
 import com.example.sosemergency.utils.DateConverterUtil;
 import com.example.sosemergency.utils.UserPersistenceManager;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * UserRegistrationActivity - Activity for user registration.
@@ -32,6 +43,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
     EditText dateOfBirth;
     AutoCompleteTextView country;
     ImageView dotIcon;
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     // Request code for starting ContactRegistrationActivity
     private static final int REQUEST_CONTACT_REGISTRATION = 2;
@@ -50,6 +63,17 @@ public class UserRegistrationActivity extends AppCompatActivity {
         String[] countries = {"Morocco", "France", "England"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, countries);
         country.setAdapter(adapter);
+
+        //Set DatPicker for dateOfBirth
+        dateOfBirth.setOnClickListener(view -> showDatePicker(dateOfBirth));
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                month = month + 1;
+                String date = day+"-"+month+"-"+year;
+                dateOfBirth.setText(date);
+            }
+        };
 
         // Set OnClickListener for the dot icon
         dotIcon.setOnClickListener(new View.OnClickListener() {
@@ -111,5 +135,38 @@ public class UserRegistrationActivity extends AppCompatActivity {
             dateOfBirth.setText(dobValue);
             country.setText(countryValue);
         }
+    }
+
+    // Use Date Picker for date of birth
+    private void showDatePicker(EditText profileDate) {
+        // Get the current date
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        // If profileDate has a valid date, use it as the initial date for the DatePicker
+        String dateString = profileDate.getText().toString();
+        if (!TextUtils.isEmpty(dateString)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            try {
+                Date date = dateFormat.parse(dateString);
+                cal.setTime(date);
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH);
+                day = cal.get(Calendar.DAY_OF_MONTH);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Create a DatePickerDialog with a custom theme and set the date listener
+        DatePickerDialog dialog = new DatePickerDialog(UserRegistrationActivity.this, R.style.DatePickerTheme, mDateSetListener, year, month, day);
+
+        // Set the background of the dialog to white
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+        // Show the date picker dialog
+        dialog.show();
     }
 }
