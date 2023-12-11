@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment"
     android:fillViewport="true"
-   >
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -159,7 +159,7 @@
                                     android:background="@android:color/transparent"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-                                    android:text="21"
+                                    android:text="22"
                                     android:textSize="@dimen/text_size_medium"
                                     android:textStyle="bold" />
 
@@ -187,6 +187,7 @@
                     android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/profileBloodCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -221,7 +222,7 @@
                                 android:background="@android:color/transparent"
                                 android:focusable="false"
                                 android:focusableInTouchMode="false"
-                                android:text="O+"
+                                android:text="..."
                                 android:textSize="@dimen/text_size_medium"
                                 android:textStyle="bold" />
 
@@ -237,6 +238,7 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -244,6 +246,7 @@
                 android:layout_marginTop="@dimen/spacing_medium">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/profileHeightCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -283,7 +286,7 @@
                                     android:background="@android:color/transparent"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-                                    android:text="54"
+                                    android:text="..."
                                     android:textSize="@dimen/text_size_medium"
                                     android:textStyle="bold" />
 
@@ -311,6 +314,7 @@
                     android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/profileWeightCard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -348,7 +352,7 @@
                                     android:background="@android:color/transparent"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-                                    android:text="53"
+                                    android:text="..."
                                     android:textSize="@dimen/text_size_medium"
                                     android:textStyle="bold" />
                                 <TextView
@@ -378,13 +382,38 @@
             android:orientation="vertical"
             android:layout_marginTop="@dimen/spacing_large">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Allergies and Reactions"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold"
-                android:textColor="@color/navbar_text"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="318dp"
+                    android:layout_height="wrap_content"
+                    android:text="Allergies and Reactions"
+                    android:textColor="@color/navbar_text"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/AllergiesEditIcon"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/profile_pink_edit" />
+                <ImageView
+                    android:id="@+id/AllergiesSaveIcon"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/profile_pink_save"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <!-- CardView for Apple Allergy -->
             <androidx.cardview.widget.CardView
@@ -411,13 +440,20 @@
                         android:src="@drawable/profile_yellow_apple" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="92dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/spacing_medium"
+                        android:layout_weight="1"
                         android:text="Apple"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:textSize="@dimen/text_size_medium" />
+
+                    <ImageView
+                        android:id="@+id/checkApple"
+                        android:layout_width="35dp"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/allergies_check" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -431,7 +467,8 @@
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
-                android:layout_marginEnd="1dp">
+                android:layout_marginEnd="1dp"
+                app:cardBackgroundColor="@color/extra_white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -453,7 +490,13 @@
                         android:text="Grape"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:id="@+id/checkGrape"
+                        android:layout_width="35dp"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/allergies_check"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -473,7 +516,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/spacing_medium"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:cardBackgroundColor="@color/extra_white">
 
                     <ImageView
                         android:layout_width="@dimen/icon_size"
@@ -489,20 +533,27 @@
                         android:text="Strawberry"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:id="@+id/checkStrawberry"
+                        android:layout_width="35dp"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/allergies_check"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!-- CardView for Apple Allergy -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/appleAllergiee"
+                android:id="@+id/orangeAllergie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/corner_radius_medium"
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
-                android:layout_marginEnd="1dp">
+                android:layout_marginEnd="1dp"
+                app:cardBackgroundColor="@color/extra_white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -521,24 +572,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/spacing_medium"
-                        android:text="Apple"
+                        android:text="Orange"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:id="@+id/checkOrange"
+                        android:layout_width="35dp"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/allergies_check"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- CardView for Grape Allergy -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/grapeAllergyy"
+                android:id="@+id/bananaAllergie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/corner_radius_medium"
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
-                android:layout_marginEnd="1dp">
+                android:layout_marginEnd="1dp"
+                app:cardBackgroundColor="@color/extra_white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -557,24 +615,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/spacing_medium"
-                        android:text="Grape"
+                        android:text="Banana"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:id="@+id/checkBanana"
+                        android:layout_width="35dp"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/allergies_check"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- CardView for Strawberry Allergy -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/strawberryAllergyy"
+                android:id="@+id/fishAllergie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="@dimen/corner_radius_medium"
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="1dp"
                 android:layout_marginStart="1dp"
-                android:layout_marginEnd="1dp">
+                android:layout_marginEnd="1dp"
+                app:cardBackgroundColor="@color/extra_white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -593,11 +658,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/spacing_medium"
-                        android:text="Strawberry"
+                        android:text="Fish"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
-
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:id="@+id/checkFish"
+                        android:layout_width="35dp"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/allergies_check"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!-- CardView for Other Allergies -->
@@ -609,7 +679,8 @@
                 android:layout_marginTop="@dimen/spacing_medium"
                 android:layout_marginBottom="@dimen/spacing_medium"
                 android:layout_marginStart="1dp"
-                android:layout_marginEnd="1dp">
+                android:layout_marginEnd="1dp"
+                app:cardBackgroundColor="@color/extra_white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -631,7 +702,13 @@
                         android:text="Others"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:layout_weight="1"/>
+                    <ImageView
+                        android:id="@+id/checkOthers"
+                        android:layout_width="35dp"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/allergies_check"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -639,4 +716,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </ScrollView>

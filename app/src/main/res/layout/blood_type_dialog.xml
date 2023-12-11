@@ -1,0 +1,38 @@
+<!-- res/layout/blood_type_dialog.xml -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp">
+
+    <!-- Content inside the CardView -->
+    <LinearLayout
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <!-- Blood Type Spinner -->
+        <Spinner
+            android:id="@+id/spinnerBloodType"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:dropDownWidth="180dp"
+            android:entries="@array/blood_types"
+            android:padding="20dp"
+            android:spinnerMode="dropdown"
+            android:textSize="30sp" />
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnSelectBloodType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/primary_light"
+            android:text="Save"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
