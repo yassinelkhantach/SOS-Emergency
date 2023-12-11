@@ -28,6 +28,9 @@ public class UserRegistrationActivity extends AppCompatActivity {
     EditText dateOfBirth;
     AutoCompleteTextView country;
     ImageView dotIcon;
+
+    // Request code for starting ContactRegistrationActivity
+    private static final int REQUEST_CONTACT_REGISTRATION = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +53,17 @@ public class UserRegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Check if all required fields are filled
                 if (isFieldsFilled()) {
-                    // All fields are filled, proceed to Activity 2
-                    startActivity(new Intent(UserRegistrationActivity.this, ContactRegistrationActivity.class));
+                    // All fields are filled, proceed to ContactRegistrationActivity
+                    Intent intent = new Intent(UserRegistrationActivity.this, ContactRegistrationActivity.class);
+
+                    // Pass user data to ContactRegistrationActivity
+                    intent.putExtra("FULL_NAME", fullName.getText().toString());
+                    intent.putExtra("DOB", dateOfBirth.getText().toString());
+                    intent.putExtra("COUNTRY", country.getText().toString());
+
+                    startActivityForResult(intent, REQUEST_CONTACT_REGISTRATION);
                 } else {
-                    // Display a message for perform some action if fields are not filled
+                    // Display a message for performing some action if fields are not filled
                     Toast.makeText(UserRegistrationActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -73,5 +83,23 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
         // Check if any of the fields is empty
         return !TextUtils.isEmpty(name) && !TextUtils.isEmpty(dob) && !TextUtils.isEmpty(selectedCountry);
+    }
+
+    // Override onActivityResult to handle the result from ContactRegistrationActivity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CONTACT_REGISTRATION && resultCode == RESULT_OK) {
+            // Retrieve the data from ContactRegistrationActivity
+            String fullNameValue = data.getStringExtra("FULL_NAME");
+            String dobValue = data.getStringExtra("DOB");
+            String countryValue = data.getStringExtra("COUNTRY");
+
+            // Use the retrieved data as needed (e.g., populate the fields)
+            fullName.setText(fullNameValue);
+            dateOfBirth.setText(dobValue);
+            country.setText(countryValue);
+        }
     }
 }

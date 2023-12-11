@@ -88,10 +88,16 @@ public class ContactRegistrationActivity extends AppCompatActivity {
         dotIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start UserRegistrationActivity when dotIcon is clicked
-                startActivity(new Intent(ContactRegistrationActivity.this, UserRegistrationActivity.class));
+                // Return to UserRegistrationActivity with data
+                Intent intent = new Intent();
+                intent.putExtra("FULL_NAME", getIntent().getStringExtra("FULL_NAME"));
+                intent.putExtra("DOB", getIntent().getStringExtra("DOB"));
+                intent.putExtra("COUNTRY", getIntent().getStringExtra("COUNTRY"));
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
+
     }
 
     // Handle the result of picking a contact
