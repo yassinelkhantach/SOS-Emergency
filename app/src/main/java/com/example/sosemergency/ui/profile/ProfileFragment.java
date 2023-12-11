@@ -5,6 +5,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.nfc.Tag;
@@ -40,7 +41,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * ProfileFragment - Fragment for displaying and editing user profile information.
@@ -74,12 +77,25 @@ public class ProfileFragment extends Fragment {
     private CardView fishAllergie;
     private CardView otherAllergie;
 
+    // Check icons for Allergies
+    private ImageView checkApple;
+    private ImageView checkGrape;
+    private ImageView checkStrawberry;
+    private ImageView checkOrange;
+    private ImageView checkBanana;
+    private ImageView checkFish;
+    private ImageView checkOthers;
+
     // Edit and save icons for allergies
     private ImageView allergiesEditIcon;
     private ImageView allergiesSaveIcon;
 
     // Edit mode flag
     private boolean isEditMode = false;
+
+    //Map to store allergies
+
+    private Map<String, Boolean> allergyStates = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +131,15 @@ public class ProfileFragment extends Fragment {
         bananaAllergie = binding.bananaAllergie;
         fishAllergie = binding.fishAllergie;
         otherAllergie = binding.otherAllergie;
+
+        //Initialize check icons for Allergies
+        checkApple = binding.checkApple;
+        checkGrape = binding.checkGrape;
+        checkStrawberry = binding.checkStrawberry;
+        checkOrange = binding.checkOrange;
+        checkBanana = binding.checkBanana;
+        checkFish = binding.checkFish;
+        checkOthers = binding.checkOthers;
 
         // Initialize the edit and save icons for allergies
         allergiesEditIcon = binding.AllergiesEditIcon;
@@ -503,13 +528,13 @@ public class ProfileFragment extends Fragment {
      */
     private void setAllergiesClickability(boolean isClickable) {
         // Set the clickability of each allergy card based on the provided boolean
-        appleAllergie.setClickable(isClickable);
-        grapeAllergie.setClickable(isClickable);
-        strawberryAllergie.setClickable(isClickable);
-        orangeAllergie.setClickable(isClickable);
-        bananaAllergie.setClickable(isClickable);
-        fishAllergie.setClickable(isClickable);
-        otherAllergie.setClickable(isClickable);
+        setCardClickability(appleAllergie, checkApple, "apple", isClickable);
+        setCardClickability(grapeAllergie, checkGrape, "grape", isClickable);
+        setCardClickability(strawberryAllergie, checkStrawberry, "strawberry", isClickable);
+        setCardClickability(orangeAllergie, checkOrange, "orange", isClickable);
+        setCardClickability(bananaAllergie, checkBanana, "banana", isClickable);
+        setCardClickability(fishAllergie, checkFish, "fish", isClickable);
+        setCardClickability(otherAllergie, checkOthers, "others", isClickable);
     }
 
     /**
@@ -518,47 +543,92 @@ public class ProfileFragment extends Fragment {
      */
     private void setupAllergyClickListeners() {
         // Set click listener for the Apple Allergy card
-        appleAllergie.setOnClickListener(v -> toggleAllergySelection(appleAllergie));
+        setupAllergyClickListener(appleAllergie, checkApple, "apple");
 
         // Set click listener for the Grape Allergy card
-        grapeAllergie.setOnClickListener(v -> toggleAllergySelection(grapeAllergie));
+        setupAllergyClickListener(grapeAllergie, checkGrape, "grape");
 
         // Set click listener for the Strawberry Allergy card
-        strawberryAllergie.setOnClickListener(v -> toggleAllergySelection(strawberryAllergie));
+        setupAllergyClickListener(strawberryAllergie, checkStrawberry, "strawberry");
 
         // Set click listener for the Orange Allergy card
-        orangeAllergie.setOnClickListener(v -> toggleAllergySelection(orangeAllergie));
+        setupAllergyClickListener(orangeAllergie, checkOrange, "orange");
 
         // Set click listener for the Banana Allergy card
-        bananaAllergie.setOnClickListener(v -> toggleAllergySelection(bananaAllergie));
+        setupAllergyClickListener(bananaAllergie, checkBanana, "banana");
 
         // Set click listener for the Fish Allergy card
-        fishAllergie.setOnClickListener(v -> toggleAllergySelection(fishAllergie));
+        setupAllergyClickListener(fishAllergie, checkFish, "fish");
 
-        // Set click listener for the Other Allergy card
-        otherAllergie.setOnClickListener(v -> toggleAllergySelection(otherAllergie));
+        // Set click listener for the Others Allergy card
+        setupAllergyClickListener(otherAllergie, checkOthers, "others");
     }
 
     /**
-     * Toggle the selection state of an allergy card when in edit mode.
+     * Set up click listener for a specific allergy card.
      *
-     * @param allergyCard The CardView representing an allergy.
+     * @param allergyCard The CardView representing the allergy.
+     * @param checkIcon   The ImageView representing the check icon for the allergy.
+     * @param allergyKey  A unique identifier for the allergy.
      */
-    private void toggleAllergySelection(CardView allergyCard) {
-        // Check if the activity is in edit mode
-        if (isEditMode) {
-            // Toggle the background color between white and the default color
-            int defaultColor = ContextCompat.getColor(requireContext(), R.color.extra_white);
-            int selectedColor = ContextCompat.getColor(requireContext(), R.color.white);
+    private void setupAllergyClickListener(CardView allergyCard, ImageView checkIcon, String allergyKey) {
+        // Load the selected state for the allergy
+        loadAllergyState(allergyCard, checkIcon, allergyKey);
 
-            // Check the current color of the allergy card background
-            if (allergyCard.getCardBackgroundColor().getDefaultColor() == defaultColor) {
-                // Set the background color to the selected color if not already selected
-                allergyCard.setCardBackgroundColor(selectedColor);
-            } else {
-                // Set the background color to the default color if already selected
-                allergyCard.setCardBackgroundColor(defaultColor);
-            }
+        // Set click listener for the allergy card
+        allergyCard.setOnClickListener(v -> toggleAllergySelection(checkIcon, allergyKey));
+    }
+
+    /**
+     * Set the clickability of an allergy card.
+     *
+     * @param allergyCard The CardView representing the allergy.
+     * @param checkIcon   The ImageView representing the check icon for the allergy.
+     * @param allergyKey  A unique identifier for the allergy.
+     * @param isClickable A boolean indicating whether the card should be clickable or not.
+     */
+    private void setCardClickability(CardView allergyCard, ImageView checkIcon, String allergyKey, boolean isClickable) {
+        allergyCard.setClickable(isClickable);
+
+        // Load the selected state for the allergy
+        loadAllergyState(allergyCard, checkIcon, allergyKey);
+    }
+
+    /**
+     * Load the selected state of an allergy.
+     *
+     * @param allergyCard The CardView representing the allergy.
+     * @param checkIcon   The ImageView representing the check icon for the allergy.
+     * @param allergyKey  A unique identifier for the allergy.
+     */
+    private void loadAllergyState(CardView allergyCard, ImageView checkIcon, String allergyKey) {
+        // Load the selected state from the Map
+        Boolean isSelected = allergyStates.get(allergyKey);
+
+        // Set the visibility of the check icon based on the loaded state
+        checkIcon.setVisibility(isSelected != null && isSelected ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Toggle the selection of an allergy.
+     *
+     * @param checkIcon   The ImageView representing the check icon for the allergy.
+     * @param allergyKey  A unique identifier for the allergy.
+     */
+    private void toggleAllergySelection(ImageView checkIcon, String allergyKey) {
+        // Toggle the visibility of the check icon
+        if (checkIcon.getVisibility() == View.GONE) {
+            // Show the check icon if it's currently gone
+            checkIcon.setVisibility(View.VISIBLE);
+
+            // Save the selected state
+            saveAllergyState(allergyKey, true);
+        } else {
+            // Hide the check icon if it's currently visible
+            checkIcon.setVisibility(View.GONE);
+
+            // Save the selected state
+            saveAllergyState(allergyKey, false);
         }
     }
 
@@ -566,14 +636,35 @@ public class ProfileFragment extends Fragment {
      * Save the selected allergies and update UI accordingly.
      */
     private void saveSelectedAllergies() {
-
         // After saving, hide the save icon and show the edit icon
         allergiesSaveIcon.setVisibility(View.GONE);
         allergiesEditIcon.setVisibility(View.VISIBLE);
 
         // Enable or disable click listeners based on the edit mode
         setAllergiesClickability(false);
+
+        // Log the selected allergies
+        for (Map.Entry<String, Boolean> entry : allergyStates.entrySet()) {
+            String allergyKey = entry.getKey();
+            boolean isSelected = entry.getValue();
+            Log.d("SelectedAllergies", "Allergy: " + allergyKey + ", Selected: " + isSelected);
+        }
     }
+
+    /**
+     * Saves the selected state of an allergy during the app's lifecycle.
+     *
+     * @param allergyKey   A unique identifier for the allergy.
+     *                     This key is used to distinguish between different allergies.
+     * @param isSelected   A boolean indicating whether the allergy is selected or not.
+     *                     True represents the allergy is selected, and false represents it is not selected.
+     */
+    private void saveAllergyState(String allergyKey, boolean isSelected) {
+        // Save the selected state in the Map
+        allergyStates.put(allergyKey, isSelected);
+    }
+
+
 
     /**
      * Lifecycle method called when the view is about to be destroyed.

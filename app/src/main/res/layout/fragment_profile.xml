@@ -446,7 +446,16 @@
                         android:text="Apple"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:layout_marginEnd="240dp"/>
+                    <ImageView
+                        android:id="@+id/checkApple"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/allergies_check"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -483,7 +492,16 @@
                         android:text="Grape"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:layout_marginEnd="240dp"/>
+                    <ImageView
+                        android:id="@+id/checkGrape"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/allergies_check"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -520,7 +538,16 @@
                         android:text="Strawberry"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:layout_marginEnd="207dp"/>
+                    <ImageView
+                        android:id="@+id/checkStrawberry"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/allergies_check"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -556,7 +583,16 @@
                         android:text="Orange"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:layout_marginEnd="230dp"/>
+                    <ImageView
+                        android:id="@+id/checkOrange"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/allergies_check"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -593,7 +629,16 @@
                         android:text="Banana"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:layout_marginEnd="230dp"/>
+                    <ImageView
+                        android:id="@+id/checkBanana"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/allergies_check"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -630,8 +675,16 @@
                         android:text="Fish"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
-
+                        android:gravity="center"
+                        android:layout_marginEnd="253dp"/>
+                    <ImageView
+                        android:id="@+id/checkFish"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/allergies_check"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <!-- CardView for Other Allergies -->
@@ -666,7 +719,16 @@
                         android:text="Others"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_medium"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:layout_marginEnd="235dp"/>
+                    <ImageView
+                        android:id="@+id/checkOthers"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/allergies_check"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
