@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.sosemergency.utils.AllergyPersistenceManager;
 import com.example.sosemergency.utils.ContactPersistenceManager;
+import com.example.sosemergency.utils.ThreadPoolManager;
 import com.example.sosemergency.utils.UserPersistenceManager;
 /**
  * The main activity of the SOS Emergency app.
@@ -37,5 +38,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(reportIntent);
             }
         });
+    }
+
+    /**
+     * Ensures proper cleanup and shutdown of resources.
+     * Called when the activity is being destroyed.
+     */
+    @Override
+    protected void onDestroy() {
+        // Ensure proper shutdown of the thread pool
+        ThreadPoolManager.shutdown();
+        super.onDestroy();
     }
 }

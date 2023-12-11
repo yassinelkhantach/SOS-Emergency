@@ -2,7 +2,6 @@ package com.example.sosemergency.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.room.Room;
@@ -11,7 +10,9 @@ import com.example.sosemergency.DataLoader.AllergyDatabaseContract;
 import com.example.sosemergency.DataLoader.AppDatabase;
 import com.example.sosemergency.entities.Allergy;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class AllergyPersistenceManager {
 
@@ -38,7 +39,7 @@ public class AllergyPersistenceManager {
         values.put(AllergyDatabaseContract.AllergyEntry.COLUMN_DESCRIPTION, allergy.getDescription());
         values.put(AllergyDatabaseContract.AllergyEntry.COLUMN_USER_ID, allergy.getUserId());
         // Insert the contact into the Room database
-        AsyncTask.execute(new Runnable() {
+        ThreadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.allergyLoader().insertAllergy(allergy);
@@ -49,18 +50,49 @@ public class AllergyPersistenceManager {
 
     // Retrieves all allergies from the Room database
     public static List<Allergy> getAllergies() {
-        return appDatabase.allergyLoader().getAllergies();
+        // Wrap the original getAllergies method using ThreadPoolManager
+        try {
+            return ThreadPoolManager.executeDatabaseQuerySync(new Callable<List<Allergy>>() {
+                @Override
+                public List<Allergy> call() {
+                    try {
+                        // Retrieve the list of allergies from the Room database
+                        return appDatabase.allergyLoader().getAllergies();
+                    } catch (Exception e) {
+                        Log.e("getAllergies", "Error retrieving allergies: " + e.getMessage());
+                        return new ArrayList<>(); // Return an empty list or handle the error accordingly
+                    }
+                }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
-
 
     // Retrieves the user allergies from the Room database
     public static List<Allergy> getUserAllergies(Long userId) {
-        return appDatabase.allergyLoader().getUserAllergies(userId);
+        // Wrap the original getUserAllergies method using ThreadPoolManager
+        try {
+            return ThreadPoolManager.executeDatabaseQuerySync(new Callable<List<Allergy>>() {
+                @Override
+                public List<Allergy> call() {
+                    try {
+                        // Retrieve the user allergies from the Room database based on the user ID
+                        return appDatabase.allergyLoader().getUserAllergies(userId);
+                    } catch (Exception e) {
+                        Log.e("getUserAllergies", "Error retrieving user allergies: " + e.getMessage());
+                        return new ArrayList<>(); // Return an empty list or handle the error accordingly
+                    }
+                }
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Delete all allergies from the Room database
     public static void deleteAllergies() {
-        AsyncTask.execute(new Runnable() {
+        ThreadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.allergyLoader().deleteAllergies();
