@@ -115,6 +115,6 @@ public class UserPersistenceManager {
 
     // Check if there is a user registered in the database
     public static boolean exists() {
-        return globalUser != null;
+        return getUser() != null;
     }
 }
