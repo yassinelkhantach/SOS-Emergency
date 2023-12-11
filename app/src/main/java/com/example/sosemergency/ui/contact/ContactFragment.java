@@ -109,20 +109,10 @@ public class ContactFragment extends Fragment {
     public void onDeleteContact(int position){
         ContactModel contactToDelete = contactsModels.get(position);
         Log.d("delete contact","delete contact with phone number "+contactToDelete.getPhone());
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                ContactPersistenceManager.deleteContact(contactToDelete.getPhone());
-                contactsModels.remove(position);
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateAdapter();
-                        displayToastMessage(contactToDelete.getName()+" deleted from your trusted contacts");
-                    }
-                });
-            }
-        });
+        ContactPersistenceManager.deleteContact(contactToDelete.getPhone());
+        contactsModels.remove(position);
+        updateAdapter();
+        displayToastMessage(contactToDelete.getName()+" deleted from your trusted contacts");
     }
     public boolean hasContactsPermission()
     {
@@ -257,17 +247,12 @@ public class ContactFragment extends Fragment {
     }
     // Set up initial contact models from resources
     public void setContactsModels() {
-        AsyncTask.execute(new Runnable(){
-            @Override
-            public void run() {
-                List<Contact> contacts = ContactPersistenceManager.getContacts();
-                if (!contacts.isEmpty()) {
-                    for (Contact contact:contacts){
-                        contactsModels.add(ContactAdapter.entityToModel(contact));
-                    }
-                }
+        List<Contact> contacts = ContactPersistenceManager.getContacts();
+        if (!contacts.isEmpty()) {
+            for (Contact contact:contacts){
+                contactsModels.add(ContactAdapter.entityToModel(contact));
             }
-        });
+        }
 
     }
     // Check if the max N contacts reached and disable the button
