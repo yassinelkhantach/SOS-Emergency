@@ -2,7 +2,6 @@ package com.example.sosemergency.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.room.Room;
@@ -45,7 +44,7 @@ public class UserPersistenceManager {
         values.put(UserDatabaseContract.ContactEntry.COLUMN_BLOOD_TYPE, user.getBloodType());
         values.put(UserDatabaseContract.ContactEntry.COLUMN_HEIGHT, user.getHeight());
         values.put(UserDatabaseContract.ContactEntry.COLUMN_WEIGHT, user.getWeight());
-        AsyncTask.execute(new Runnable() {
+        ThreadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.userLoader().insertUser(user);
@@ -57,7 +56,7 @@ public class UserPersistenceManager {
     }
 
     public static void editUser(User user) {
-        AsyncTask.execute(new Runnable() {
+        ThreadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.userLoader().updateUser(user.getId(),
@@ -73,7 +72,7 @@ public class UserPersistenceManager {
     }
 
     public static void deleteUser() {
-        AsyncTask.execute(new Runnable() {
+        ThreadPoolManager.execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.userLoader().deleteUser();
