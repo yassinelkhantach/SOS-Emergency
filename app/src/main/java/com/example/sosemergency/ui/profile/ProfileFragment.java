@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment {
 
     //Map to store allergies
 
-    private Map<String, Boolean> allergyStates = new HashMap<>();
+    private static Map<String, Boolean> allergyStates = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -616,6 +616,7 @@ public class ProfileFragment extends Fragment {
      * @param allergyKey  A unique identifier for the allergy.
      */
     private void toggleAllergySelection(ImageView checkIcon, String allergyKey) {
+        if(isEditMode){
         // Toggle the visibility of the check icon
         if (checkIcon.getVisibility() == View.GONE) {
             // Show the check icon if it's currently gone
@@ -629,6 +630,7 @@ public class ProfileFragment extends Fragment {
 
             // Save the selected state
             saveAllergyState(allergyKey, false);
+        }
         }
     }
 
