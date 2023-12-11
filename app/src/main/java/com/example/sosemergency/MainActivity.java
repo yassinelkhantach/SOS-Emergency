@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,10 +34,17 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create an intent to navigate to the BootstrapActivity
-                Intent registerIntent = new Intent(MainActivity.this, UserRegistrationActivity.class);
-                // Start the BootstrapActivity
-                startActivity(registerIntent);
+                if(!UserPersistenceManager.exists()){
+                    // Create an intent to navigate to the BootstrapActivity
+                    Intent registerIntent = new Intent(MainActivity.this, UserRegistrationActivity.class);
+                    // Start the BootstrapActivity
+                    startActivity(registerIntent);
+                }else {
+                    // Create an intent to navigate to the BootstrapActivity
+                    Intent homeIntent = new Intent(MainActivity.this, BootstrapActivity.class);
+                    // Start the BootstrapActivity
+                    startActivity(homeIntent);
+                }
             }
         });
     }

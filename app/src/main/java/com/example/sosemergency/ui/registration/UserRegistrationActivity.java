@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.sosemergency.R;
+import com.example.sosemergency.entities.User;
+import com.example.sosemergency.utils.DateConverterUtil;
+import com.example.sosemergency.utils.UserPersistenceManager;
 
 /**
  * UserRegistrationActivity - Activity for user registration.
@@ -51,8 +55,13 @@ public class UserRegistrationActivity extends AppCompatActivity {
         dotIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // Check if all required fields are filled
                 if (isFieldsFilled()) {
+                    //Save User Registration
+                    User user = new User(fullName.getText().toString(), DateConverterUtil.parseDate(dateOfBirth.getText().toString()),country.getText().toString());
+                    UserPersistenceManager.registerUser(user);
+
                     // All fields are filled, proceed to ContactRegistrationActivity
                     Intent intent = new Intent(UserRegistrationActivity.this, ContactRegistrationActivity.class);
 
@@ -62,6 +71,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                     intent.putExtra("COUNTRY", country.getText().toString());
 
                     startActivityForResult(intent, REQUEST_CONTACT_REGISTRATION);
+
                 } else {
                     // Display a message for performing some action if fields are not filled
                     Toast.makeText(UserRegistrationActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
