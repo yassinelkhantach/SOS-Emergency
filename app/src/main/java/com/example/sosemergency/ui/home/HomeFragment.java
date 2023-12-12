@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 
 import com.example.sosemergency.R;
 import com.example.sosemergency.databinding.FragmentHomeBinding;
+import com.example.sosemergency.utils.EmergencySenderUtility;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -88,6 +89,12 @@ public class HomeFragment extends Fragment {
                     }
                 });
                 colorAnimator.start();
+                /**
+                 * Send SMS to all contacts
+                 * For now, let's assume that we don't want to send current location
+                 * TODO: We have to check whether we have permission to current location, if yes, send it to contacts
+                 */
+                EmergencySenderUtility.sendEmergencySmsToContacts(getContext(),null,null);
                 //display a message
                 displayToastMessage(String.valueOf(getString(R.string.home_emergency_coming_message)));
                 return true;
