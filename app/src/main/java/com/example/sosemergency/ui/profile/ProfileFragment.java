@@ -123,13 +123,25 @@ public class ProfileFragment extends Fragment {
         final ImageView profileSaveIcon = binding.profileSaveIcon;
         final EditText profileAge = binding.profileAge;
         final CardView profileBloodCard = binding.profileBloodCard;
+        final EditText profileBlood = binding.profileBlood;
         final CardView profileHeightCard = binding.profileHeightCard;
+        final EditText profileHeight = binding.profileHeight;
         final CardView profileWeightCard = binding.profileWeightCard;
+        final EditText profileWeight = binding.profileWeight;
 
         //initialize User Informations
         profileFullName.setText(UserPersistenceManager.getUser().getName().toString());
         profileBD.setText(DateConverterUtil.formatDateToString(UserPersistenceManager.getUser().getBirthDate()));
         profileAge.setText(String.valueOf(calculateAge(UserPersistenceManager.getUser().getBirthDate(),new Date())));
+        if(UserPersistenceManager.getUser().getBloodType() != null){
+            profileBlood.setText(UserPersistenceManager.getUser().getBloodType());
+        }
+        if(UserPersistenceManager.getUser().getHeight() != 0){
+            profileHeight.setText(String.valueOf(UserPersistenceManager.getUser().getHeight()));
+        }
+        if(UserPersistenceManager.getUser().getWeight() != 0){
+            profileWeight.setText(String.valueOf(UserPersistenceManager.getUser().getWeight()));
+        }
 
         // Initialize the allergies
         appleAllergie = binding.appleAllergie;
@@ -381,7 +393,12 @@ public class ProfileFragment extends Fragment {
             // Update the EditText in your CardView with the selected blood type
             EditText editText = requireView().findViewById(R.id.profileBlood);
             editText.setText(selectedBloodType);
-
+            if (selectedBloodType != null && !selectedBloodType.isEmpty()) {
+                // save editable user blood type
+                User editableUser = (UserPersistenceManager.getUser());
+                editableUser.setBloodType(selectedBloodType);
+                UserPersistenceManager.editUser(editableUser);
+            }
             // Dismiss the blood type selection dialog
             bloodTypeDialog.dismiss();
         });
@@ -441,6 +458,13 @@ public class ProfileFragment extends Fragment {
             EditText editText = requireView().findViewById(R.id.profileHeight);
             editText.setText(enteredHeight);
 
+            if (enteredHeight != null && !enteredHeight.isEmpty()) {
+                // save editable user Height
+                User editableUser = (UserPersistenceManager.getUser());
+                editableUser.setHeight(Double.parseDouble(enteredHeight));
+                UserPersistenceManager.editUser(editableUser);
+            }
+
             // Dismiss the height selection dialog
             heightDialog.dismiss();
         });
@@ -452,18 +476,44 @@ public class ProfileFragment extends Fragment {
      */
     private void showHeightDialog() {
         // Check if the height selection dialog is not null
-        if (heightDialog != null) {
-            // Observe the height LiveData
-            notificationsViewModel.getHeight().observe(getViewLifecycleOwner(), currentHeight -> {
-                // Set the current weight in the EditText
-                EditText editTextHeight = heightDialog.findViewById(R.id.editTextHeight);
-                editTextHeight.setText(currentHeight);
+        if (heightDialog != null && !heightDialog.isShowing()) {
+            // Get the height from the database
+            double currentHeight = UserPersistenceManager.getUser().getHeight();
+
+            // Inflate the layout for the dialog
+            View dialogView = getLayoutInflater().inflate(R.layout.height_dialog, null);
+            heightDialog.setContentView(dialogView);
+
+            // Find views in the dialog layout
+            EditText editTextHeight = heightDialog.findViewById(R.id.editTextHeight);
+
+            // If the height is available, set it in the EditText
+            editTextHeight.setText(String.valueOf(currentHeight));
+
+            // Set up a listener for the button to confirm the entered height
+            Button btnSelectHeight = heightDialog.findViewById(R.id.btnSelectHeight);
+            btnSelectHeight.setOnClickListener(v -> {
+                // Update the ViewModel with the entered height
+                String enteredHeight = editTextHeight.getText().toString();
+
+                // Update the EditText in your CardView with the entered height
+                EditText editText = requireView().findViewById(R.id.profileHeight);
+                editText.setText(enteredHeight);
+
+                if (!enteredHeight.isEmpty()) {
+                    // save editable user Height
+                    User editableUser = UserPersistenceManager.getUser();
+                    editableUser.setHeight(Double.parseDouble(enteredHeight));
+                    UserPersistenceManager.editUser(editableUser);
+                }
+
+                // Dismiss the height selection dialog
+                heightDialog.dismiss();
             });
 
-            // Show the weight selection dialog
+            // Show the height selection dialog
             heightDialog.show();
         }
-
     }
 
     /**
@@ -491,6 +541,13 @@ public class ProfileFragment extends Fragment {
             EditText editText = requireView().findViewById(R.id.profileWeight);
             editText.setText(enteredWeight);
 
+            if (enteredWeight != null && !enteredWeight.isEmpty()) {
+                // save editable user Height
+                User editableUser = (UserPersistenceManager.getUser());
+                editableUser.setWeight(Double.parseDouble(enteredWeight));
+                UserPersistenceManager.editUser(editableUser);
+            }
+
             // Dismiss the weight selection dialog
             weightDialog.dismiss();
         });
@@ -502,12 +559,39 @@ public class ProfileFragment extends Fragment {
      */
     private void showWeightDialog() {
         // Check if the weight selection dialog is not null
-        if (weightDialog != null) {
-            // Observe the weight LiveData
-            notificationsViewModel.getWeight().observe(getViewLifecycleOwner(), currentWeight -> {
-                // Set the current weight in the EditText
-                EditText editTextWeight = weightDialog.findViewById(R.id.editTextWeight);
-                editTextWeight.setText(currentWeight);
+        if (weightDialog != null && !weightDialog.isShowing()) {
+            // Get the weight from the database
+            double currentWeight = UserPersistenceManager.getUser().getWeight();
+
+            // Inflate the layout for the dialog
+            View dialogView = getLayoutInflater().inflate(R.layout.weight_dialog, null);
+            weightDialog.setContentView(dialogView);
+
+            // Find views in the dialog layout
+            EditText editTextWeight = weightDialog.findViewById(R.id.editTextWeight);
+
+            // If the weight is available, set it in the EditText
+            editTextWeight.setText(String.valueOf(currentWeight));
+
+            // Set up a listener for the button to confirm the entered weight
+            Button btnSelectWeight = weightDialog.findViewById(R.id.btnSelectWeight);
+            btnSelectWeight.setOnClickListener(v -> {
+                // Update the ViewModel with the entered weight
+                String enteredWeight = editTextWeight.getText().toString();
+
+                // Update the EditText in your CardView with the entered weight
+                EditText editText = requireView().findViewById(R.id.profileWeight);
+                editText.setText(enteredWeight);
+
+                if (!enteredWeight.isEmpty()) {
+                    // Save editable user weight
+                    User editableUser = UserPersistenceManager.getUser();
+                    editableUser.setWeight(Double.parseDouble(enteredWeight));
+                    UserPersistenceManager.editUser(editableUser);
+                }
+
+                // Dismiss the weight selection dialog
+                weightDialog.dismiss();
             });
 
             // Show the weight selection dialog
