@@ -36,7 +36,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.sosemergency.MainActivity;
 import com.example.sosemergency.R;
 import com.example.sosemergency.databinding.FragmentProfileBinding;
+import com.example.sosemergency.entities.Allergy;
 import com.example.sosemergency.entities.User;
+import com.example.sosemergency.utils.AllergyPersistenceManager;
 import com.example.sosemergency.utils.DateConverterUtil;
 import com.example.sosemergency.utils.UserPersistenceManager;
 
@@ -45,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -99,7 +102,6 @@ public class ProfileFragment extends Fragment {
     //Map to store allergies
 
     private static Map<String, Boolean> allergyStates = new HashMap<>();
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,11 +138,19 @@ public class ProfileFragment extends Fragment {
         if(UserPersistenceManager.getUser().getBloodType() != null){
             profileBlood.setText(UserPersistenceManager.getUser().getBloodType());
         }
-        if(UserPersistenceManager.getUser().getHeight() != 0){
+        if(UserPersistenceManager.getUser().getHeight() != 0.0){
             profileHeight.setText(String.valueOf(UserPersistenceManager.getUser().getHeight()));
         }
-        if(UserPersistenceManager.getUser().getWeight() != 0){
+        if(UserPersistenceManager.getUser().getWeight() != 0.0){
             profileWeight.setText(String.valueOf(UserPersistenceManager.getUser().getWeight()));
+        }
+        Log.i("allergies", AllergyPersistenceManager.getAllergies().toString());
+
+        // Fetch all allergies and selected allergies
+        List<Allergy> allAllergies = AllergyPersistenceManager.getAllergies();
+        // Iterate over all allergies and show check icons for selected ones
+        for (Allergy allergy : allAllergies) {
+            allergyStates.put(allergy.getName(), true);
         }
 
         // Initialize the allergies
@@ -487,8 +497,10 @@ public class ProfileFragment extends Fragment {
             // Find views in the dialog layout
             EditText editTextHeight = heightDialog.findViewById(R.id.editTextHeight);
 
-            // If the height is available, set it in the EditText
-            editTextHeight.setText(String.valueOf(currentHeight));
+            // If the height is not 0.0, set it in the EditText, otherwise set a default text
+            if (Double.compare(currentHeight, 0.0) != 0) {
+                editTextHeight.setText(String.valueOf(currentHeight));
+            }
 
             // Set up a listener for the button to confirm the entered height
             Button btnSelectHeight = heightDialog.findViewById(R.id.btnSelectHeight);
@@ -515,6 +527,7 @@ public class ProfileFragment extends Fragment {
             heightDialog.show();
         }
     }
+
 
     /**
      * Set up and initialize the weight selection dialog.
@@ -570,8 +583,10 @@ public class ProfileFragment extends Fragment {
             // Find views in the dialog layout
             EditText editTextWeight = weightDialog.findViewById(R.id.editTextWeight);
 
-            // If the weight is available, set it in the EditText
-            editTextWeight.setText(String.valueOf(currentWeight));
+            // If the weight is not 0.0, set it in the EditText, otherwise set a default text
+            if (Double.compare(currentWeight, 0.0) != 0) {
+                editTextWeight.setText(String.valueOf(currentWeight));
+            }
 
             // Set up a listener for the button to confirm the entered weight
             Button btnSelectWeight = weightDialog.findViewById(R.id.btnSelectWeight);
@@ -743,6 +758,27 @@ public class ProfileFragment extends Fragment {
         // Enable or disable click listeners based on the edit mode
         setAllergiesClickability(false);
 
+        // Get the user
+        User user = UserPersistenceManager.getUser();
+
+        // Update user's allergies based on the selected allergies
+        for (Map.Entry<String, Boolean> entry : allergyStates.entrySet()) {
+            String allergyKey = entry.getKey();
+            boolean isSelected = entry.getValue();
+
+            // Check if the allergy is selected and not already present in user's allergies
+            if (isSelected && !userHasAllergy(user, allergyKey)) {
+                // Add the selected allergy to the user's allergies
+                Allergy selectedAllergy = new Allergy(allergyKey, "");
+                selectedAllergy.setUserId(user.getId());
+                AllergyPersistenceManager.insertAllergy(selectedAllergy);
+            } else if (!isSelected && userHasAllergy(user, allergyKey)) {
+                // Remove the allergy from the user's allergies if it's not selected
+                Allergy removedAllergy = findUserAllergy(user, allergyKey);
+                AllergyPersistenceManager.deleteAllergy(removedAllergy);
+            }
+        }
+
         // Log the selected allergies
         for (Map.Entry<String, Boolean> entry : allergyStates.entrySet()) {
             String allergyKey = entry.getKey();
@@ -750,6 +786,39 @@ public class ProfileFragment extends Fragment {
             Log.d("SelectedAllergies", "Allergy: " + allergyKey + ", Selected: " + isSelected);
         }
     }
+
+    /**
+     * Check if the user already has the given allergy.
+     *
+     * @param user       The user object.
+     * @param allergyKey The unique identifier for the allergy.
+     * @return True if the user has the allergy, false otherwise.
+     */
+    private boolean userHasAllergy(User user, String allergyKey) {
+        for (Allergy allergy : AllergyPersistenceManager.getAllergies()) {
+            if (allergy.getName().equals(allergyKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find the allergy object in the user's allergies based on the allergy key.
+     *
+     * @param user       The user object.
+     * @param allergyKey The unique identifier for the allergy.
+     * @return The found allergy object or null if not found.
+     */
+    private Allergy findUserAllergy(User user, String allergyKey) {
+        for (Allergy allergy : AllergyPersistenceManager.getAllergies()) {
+            if (allergy.getName().equals(allergyKey)) {
+                return allergy;
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Saves the selected state of an allergy during the app's lifecycle.
@@ -764,6 +833,26 @@ public class ProfileFragment extends Fragment {
         allergyStates.put(allergyKey, isSelected);
     }
 
+    private ImageView getCheckIconForAllergy(Allergy allergy) {
+        switch (allergy.getName()) {
+            case "apple":
+                return binding.checkApple;
+            case "grape":
+                return binding.checkGrape;
+            case "strawberry":
+                return binding.checkStrawberry;
+            case "orange":
+                return binding.checkOrange;
+            case "banana":
+                return binding.checkBanana;
+            case "fish":
+                return binding.checkFish;
+            case "others":
+                return binding.checkOthers;
+            default:
+                return null;
+        }
+    }
 
 
     /**
