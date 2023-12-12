@@ -38,22 +38,6 @@ public class BootstrapActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_report);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
-        /*
-         * This test demonstrates the usage of ContactPersistenceManager methods in the application.
-         * It initializes the Room database and adds a contact to the database for testing purposes.
-         */
-
-        // Initialize the Room database for testing
-        ContactPersistenceManager.initAppDatabase(getApplicationContext());
-        ContactPersistenceManager.deleteContacts();
-        // Add a contact to the Room database for testing
-        ContactPersistenceManager.addContact(
-                new Contact(
-                        getResources().getStringArray(R.array.contact_name)[0],
-                        getResources().getStringArray(R.array.contact_phone)[0]
-                )
-        );
     }
 
     @Override
