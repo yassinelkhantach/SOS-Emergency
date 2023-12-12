@@ -22,9 +22,10 @@
     <string name="report_bribery_icon_text">Bribery</string>
     <string name="report_crime_icon_text">Crime</string>
     <string name="report_button_description_home">You have more details about the emergency? report it now! \nNotify authorities and seek assistance</string>
-    <string name="header_description_home">Press the button below and the help will reach you shortly</string>
+    <string name="header_description_home">Press and hold the button below and the help will reach you shortly</string>
     <string name="header_title_home">Emergency help needed?</string>
     <string name="report_emergency_edit_text">Where is the emergency?</string>
+    <string name="home_emergency_coming_message">Help is on the way.Stay calm</string>
     <string name="emergency_sms_template">I need your help! I\'m in an emergency situation\n%s</string>
     <string name="location_sms_template">Location: %s</string>
     <string-array name="emergency_service_name">
