@@ -39,7 +39,27 @@ public class EmergencySenderUtility {
         }
 
         for (Contact contact : contacts) {
-            sendEmergencySms(context, contact.getPhoneNumber(), emergencyType, currentLatLng);
+            sendEmergencySms(context, contact.getPhoneNumber(), emergencyType);
+        }
+
+        showToast(context, "Emergency report sent to all contacts!");
+    }
+
+    /**
+     * Sends emergency SMS messages to all contacts without specifying an emergency type.
+     *
+     * @param context The context of the application.
+     */
+    public static void sendEmergencySmsToContacts(Context context) {
+        List<Contact> contacts = ContactPersistenceManager.getContacts();
+
+        if (contacts.isEmpty()) {
+            showToast(context, "No contacts in the database");
+            return;
+        }
+
+        for (Contact contact : contacts) {
+            sendEmergencySms(context, contact.getPhoneNumber(), null);
         }
 
         showToast(context, "Emergency report sent to all contacts!");
@@ -49,16 +69,15 @@ public class EmergencySenderUtility {
      * Initiates the process of sending an emergency SMS.
      * Checks for SEND_SMS permission, and requests it if not granted.
      *
-     * @param context       The context of the application.
-     * @param phoneNumber   The phone number of the contact to send the SMS.
+     * @param context     The context of the application.
+     * @param phoneNumber The phone number of the contact to send the SMS.
      * @param emergencyType The type of emergency.
-     * @param currentLatLng The current location in LatLng format.
      */
-    private static void sendEmergencySms(Context context, String phoneNumber, String emergencyType, LatLng currentLatLng) {
+    private static void sendEmergencySms(Context context, String phoneNumber, String emergencyType) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED) {
             // Permission is already granted
-            sendSms(context, phoneNumber, emergencyType, currentLatLng);
+            sendSms(context, phoneNumber, emergencyType);
         } else {
             // Permission is not granted, request it
             ActivityCompat.requestPermissions((AppCompatActivity) context,
@@ -68,15 +87,14 @@ public class EmergencySenderUtility {
     }
 
     /**
-     * Sends an emergency SMS to the specified phone number.
+     * Sends an emergency SMS to the specified phone number without including the location.
      *
      * @param context       The context of the application.
      * @param phoneNumber   The phone number of the contact to send the SMS.
      * @param emergencyType The type of emergency.
-     * @param currentLatLng The current location in LatLng format.
      */
-    private static void sendSms(Context context, String phoneNumber, String emergencyType, LatLng currentLatLng) {
-        String smsMessage = createSmsMessage(context, emergencyType, currentLatLng);
+    private static void sendSms(Context context, String phoneNumber, String emergencyType) {
+        String smsMessage = createSmsMessage(context, emergencyType, null);
         SmsManager.getDefault().sendTextMessage(phoneNumber, null, smsMessage, null, null);
         showToast(context, "Emergency report sent!");
     }
