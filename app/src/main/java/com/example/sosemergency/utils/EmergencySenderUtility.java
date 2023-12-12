@@ -33,7 +33,7 @@ public class EmergencySenderUtility {
      */
     public static void sendEmergencySmsToContacts(Context context, EmergencyType emergencyType, LatLng currentLatLng) {
         List<Contact> contacts = ContactPersistenceManager.getContacts();
-        String emergencyTypeName = getEmergencyTypeName(context, emergencyType);
+        String emergencyTypeName = emergencyType != null ? getEmergencyTypeName(context, emergencyType) : null;
 
         if (contacts.isEmpty()) {
             showToast(context, "No contacts in the database");
@@ -133,14 +133,13 @@ public class EmergencySenderUtility {
      */
     private static String createSmsMessage(Context context, String emergencyType, LatLng currentLatLng) {
         String emergencySmsTemplate = context.getString(R.string.emergency_sms_template);
-        String locationSmsTemplate = context.getString(R.string.location_sms_template);
+        String locationSmsTemplate = context.getString(R.string.emergency_location_sms_template);
+        String typeSmsTemplate = context.getString(R.string.emergency_location_sms_template);
 
-        StringBuilder smsMessageBuilder = new StringBuilder();
+        StringBuilder smsMessageBuilder = new StringBuilder(emergencySmsTemplate);
 
         if (emergencyType != null) {
-            smsMessageBuilder.append(String.format(emergencySmsTemplate, emergencyType));
-        } else {
-            smsMessageBuilder.append("");
+            smsMessageBuilder.append("\n").append(String.format(locationSmsTemplate, emergencyType));
         }
 
         if (currentLatLng != null) {
