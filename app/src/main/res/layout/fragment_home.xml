@@ -45,7 +45,7 @@
             android:layout_weight="60">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/getEmergencyButton"
                 android:layout_width="200dp"
                 android:layout_height="199dp"
                 android:layout_gravity="center"
@@ -54,7 +54,7 @@
         </FrameLayout>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/addNewContactCard"
+            android:id="@+id/goToReportPageCard"
             android:foreground="?android:attr/selectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -83,6 +83,7 @@
                     android:layout_marginHorizontal="@dimen/spacing_small"/>
 
                 <Button
+                    android:id="@+id/goToReportPageButton"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="30"
