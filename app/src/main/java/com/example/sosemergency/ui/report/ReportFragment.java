@@ -7,6 +7,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.sosemergency.R;
 import com.example.sosemergency.databinding.FragmentReportBinding;
+import com.example.sosemergency.entities.EmergencyType;
 import com.example.sosemergency.utils.ContactPersistenceManager;
 import com.example.sosemergency.utils.EmergencySenderUtility;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -373,23 +375,40 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         }
     }
 
+    /**
+     * Sends an emergency report based on the selected emergency type and current location.
+     * Retrieves the emergency type and location, then sends an emergency SMS to the corresponding service.
+     */
     private void sendEmergencyReport() {
-        String emergencyType = getEmergencyType();
+        // Retrieve the selected emergency type and current location
+        EmergencyType emergencyType = EmergencyType.fromString(getContext(),getEmergencyType());
         LatLng currentLatLng = getCurrentLocation();
-
+        // Log the selected emergency type for debugging purposes
+        Log.i("Emergency type", "Emergency service chosen by the user is: " + emergencyType.getName(getContext()));
+        // Check if a valid emergency type is selected, then initiate sending the emergency SMS
         if (emergencyType != null) {
-            EmergencySenderUtility.sendEmergencySmsToContacts(requireContext(), emergencyType, currentLatLng);
+            EmergencySenderUtility.sendEmergencySmsToService(requireContext(), emergencyType, currentLatLng);
         } else {
             showToast("Please select an emergency type");
         }
     }
 
+    /**
+     * Retrieves the selected emergency type from the radio group.
+     *
+     * @return The string representation of the selected emergency type, or null if none selected.
+     */
     private String getEmergencyType() {
         return (checkedRadioButtonId != -1) ?
                 ((RadioButton) getView().findViewById(checkedRadioButtonId)).getText().toString() :
                 null;
     }
 
+    /**
+     * Displays a toast message with the given message.
+     *
+     * @param message The message to display in the toast.
+     */
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
