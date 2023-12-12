@@ -1,18 +1,12 @@
 package com.example.sosemergency.ui.report;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +27,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.sosemergency.R;
 import com.example.sosemergency.databinding.FragmentReportBinding;
-import com.example.sosemergency.entities.Contact;
 import com.example.sosemergency.utils.ContactPersistenceManager;
+import com.example.sosemergency.utils.EmergencySenderUtility;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -201,7 +195,6 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         String markerTitle = latLng.latitude + "," + latLng.longitude;
         Marker clickedMarker = googleMap.addMarker(new MarkerOptions().position(latLng).title(markerTitle));
         markers.add(clickedMarker);
-        selectedMarkerPosition = latLng;
         // Update the selectedMarkerPosition
         selectedMarkerPosition = latLng;
     }
@@ -221,7 +214,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
         if (requestCode == MY_PERMISSIONS_REQUEST_SEND_SMS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, proceed to send SMS
-                sendSmsAfterPermissionCheck();
+                sendEmergencyReport();
             } else {
                 showToast("Permission denied. Cannot send SMS.");
             }
@@ -291,19 +284,6 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
             TextView targetTextView = (TextView) parentLayout.getChildAt(1);
             int color = ContextCompat.getColor(requireContext(), R.color.primary);
             targetTextView.setTextColor(color);
-        }
-    }
-
-    private void checkLocationPermissionAndLoadLocation() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED) {
-            // Permission granted, we load current location
-            loadMyLocation();
-        } else {
-            // Permission not granted, we request it
-            ActivityCompat.requestPermissions(requireActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -395,64 +375,13 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
 
     private void sendEmergencyReport() {
         String emergencyType = getEmergencyType();
+        LatLng currentLatLng = getCurrentLocation();
 
         if (emergencyType != null) {
-            // Check if SEND_SMS permission is granted
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.SEND_SMS)
-                    == PackageManager.PERMISSION_GRANTED) {
-                // Permission is already granted
-                sendSmsAfterPermissionCheck();
-            } else {
-                // Permission is not granted, request it
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
+            EmergencySenderUtility.sendEmergencySmsToContacts(requireContext(), emergencyType, currentLatLng);
         } else {
             showToast("Please select an emergency type");
         }
-    }
-
-
-    // Logic behind sending the SMS to the contacts list
-    private void sendSmsAfterPermissionCheck() {
-        String emergencyType = getEmergencyType();
-        LatLng currentLatLng = getCurrentLocation();
-        String mapsLink = (currentLatLng != null) ? createMapsLink(currentLatLng) : "";
-        String smsMessage = createSmsMessage(emergencyType, mapsLink);
-
-        AsyncTask.execute(new Runnable() {
-            @Override
-                public void run() {
-                    List<Contact> contacts = ContactPersistenceManager.getContacts();
-                    if (!contacts.isEmpty()) {
-                        for (Contact contact : contacts) {
-                            sendSms(contact.getPhoneNumber(), smsMessage);
-                        }
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast("Emergency report sent to all contacts!");
-                                ContactPersistenceManager.deleteContacts();
-                            }
-                        });
-                    } else {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast("No contacts in the database");
-                            }
-                        });
-                    }
-                }
-        });
-    }
-    private void sendSms(String phoneNumber, String message) {
-        SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private String getEmergencyType() {
@@ -461,19 +390,7 @@ public class ReportFragment extends Fragment implements OnMapReadyCallback, Goog
                 null;
     }
 
-    private String createMapsLink(LatLng currentLatLng) {
-        return "https://www.google.com/maps/search/?api=1&query=" +
-                currentLatLng.latitude + "," + currentLatLng.longitude;
-    }
-
-    private String createSmsMessage(String emergencyType, String mapsLink) {
-        StringBuilder smsMessageBuilder = new StringBuilder("I need your help! I'm in an emergency situation\nType: ")
-                .append(emergencyType);
-
-        if (!mapsLink.isEmpty()) {
-            smsMessageBuilder.append("\nLocation: ").append(mapsLink);
-        }
-
-        return smsMessageBuilder.toString();
+    private void showToast(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

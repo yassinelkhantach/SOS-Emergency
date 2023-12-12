@@ -26,4 +26,6 @@
     <string name="header_title_home">Emergency help needed?</string>
     <string name="report_emergency_edit_text">Where is the emergency?</string>
     <string name="home_emergency_coming_message">Help is on the way.Stay calm</string>
+    <string name="emergency_sms_template">I need your help! I\'m in an emergency situation\nType: %s</string>
+    <string name="location_sms_template">Location: %s</string>
 </resources>
