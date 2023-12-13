@@ -45,6 +45,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
     EditText dateOfBirth;
     AutoCompleteTextView country;
     ImageView dotIcon;
+    private static final String[] COUNTRIES = {"Morocco", "United States", "England", "Germany","France"};
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
@@ -65,10 +66,21 @@ public class UserRegistrationActivity extends AppCompatActivity {
         country = findViewById(R.id.registrationCountry);
         dotIcon = findViewById(R.id.registrationDot);
 
-        // Set up an array of country names for the autocomplete feature
-        String[] countries = {"Morocco", "France", "England"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, countries);
+        // Set up an adapter for the AutoCompleteTextView
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, COUNTRIES);
         country.setAdapter(adapter);
+
+        // Set OnClickListener for the AutoCompleteTextView to show the dropdown list
+        country.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                country.showDropDown();
+            }
+        });
+
+        // Disable cursor and keyboard for the AutoCompleteTextView
+        country.setFocusable(false);
+        country.setClickable(true);
 
         //Set DatPicker for dateOfBirth
         dateOfBirth.setOnClickListener(view -> showDatePicker(dateOfBirth));
