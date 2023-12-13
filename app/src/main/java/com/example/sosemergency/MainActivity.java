@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.sosemergency.ui.registration.UserRegistrationActivity;
 import com.example.sosemergency.utils.AllergyPersistenceManager;
@@ -18,36 +18,64 @@ import com.example.sosemergency.utils.UserPersistenceManager;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private Button button;
+    private ImageView appLogo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button = findViewById(R.id.button);
+
+        appLogo = findViewById(R.id.app_logo); // Assuming you have an ImageView for the app logo
+
         // Initialize the Room database for user information
         UserPersistenceManager.initAppDatabase(getApplicationContext());
         // Initialize the Room database for contact information
         ContactPersistenceManager.initAppDatabase(getApplicationContext());
         // Initialize the Room database for allergy information
         AllergyPersistenceManager.initAppDatabase(getApplicationContext());
-        // Set click listener for the button to navigate to the BootstrapActivity
-        button.setOnClickListener(new View.OnClickListener() {
+
+        // Display the logo for 1 second
+        displayLogoAndRedirect();
+    }
+
+    /**
+     * Display the logo for 2 or 3 seconds before redirecting.
+     */
+    private void displayLogoAndRedirect() {
+        appLogo.setVisibility(View.VISIBLE);
+
+        // Use a Handler to delay the redirection
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View view) {
-                if(!UserPersistenceManager.exists()){
-                    // Create an intent to navigate to the BootstrapActivity
-                    Intent registerIntent = new Intent(MainActivity.this, UserRegistrationActivity.class);
-                    // Start the BootstrapActivity
-                    startActivity(registerIntent);
-                }else {
-                    // Create an intent to navigate to the BootstrapActivity
-                    Intent homeIntent = new Intent(MainActivity.this, BootstrapActivity.class);
-                    // Start the BootstrapActivity
-                    startActivity(homeIntent);
+            public void run() {
+                // Check if the user is already registered
+                if (UserPersistenceManager.exists()) {
+                    // If registered, redirect to BootstrapActivity
+                    redirectToBootstrapActivity();
+                } else {
+                    // If not registered, redirect to the registration page
+                    redirectToRegistrationPage();
                 }
             }
-        });
+        }, 1000); // 2000 milliseconds (2 seconds) delay
     }
+
+    /**
+     * Redirect to the BootstrapActivity.
+     */
+    private void redirectToBootstrapActivity() {
+        Intent bootstrapIntent = new Intent(MainActivity.this, BootstrapActivity.class);
+        startActivity(bootstrapIntent);
+    }
+
+    /**
+     * Redirect to the registration page.
+     */
+    private void redirectToRegistrationPage() {
+        Intent registrationIntent = new Intent(MainActivity.this, UserRegistrationActivity.class);
+        startActivity(registrationIntent);
+    }
+
 
     /**
      * Ensures proper cleanup and shutdown of resources.
