@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sosemergency.BootstrapActivity;
-import com.example.sosemergency.MainActivity;
 import com.example.sosemergency.R;
 import com.example.sosemergency.entities.Contact;
 import com.example.sosemergency.ui.contact.ContactModel;
@@ -84,7 +83,11 @@ public class ContactRegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start BootstrapActivity when passIcon is clicked
-                startActivity(new Intent(ContactRegistrationActivity.this, BootstrapActivity.class));
+                Intent intent = new Intent(ContactRegistrationActivity.this, BootstrapActivity.class);
+                startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                // Finish the current activity to remove it from the back stack
+                finish();
             }
         });
         dotIcon.setOnClickListener(new View.OnClickListener() {
