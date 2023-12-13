@@ -45,6 +45,14 @@
             android:label="@string/title_activity_report"
             android:theme="@style/Theme.SOSEmergency" />
         <activity
+            android:name=".ui.registration.UserRegistrationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".ui.registration.ContactRegistrationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SOSEmergency" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -53,6 +61,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

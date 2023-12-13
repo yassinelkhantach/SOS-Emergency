@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.sosemergency.ui.registration.UserRegistrationActivity;
 import com.example.sosemergency.utils.AllergyPersistenceManager;
 import com.example.sosemergency.utils.ContactPersistenceManager;
 import com.example.sosemergency.utils.ThreadPoolManager;
@@ -32,10 +34,17 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create an intent to navigate to the BootstrapActivity
-                Intent reportIntent = new Intent(MainActivity.this, BootstrapActivity.class);
-                // Start the BootstrapActivity
-                startActivity(reportIntent);
+                if(!UserPersistenceManager.exists()){
+                    // Create an intent to navigate to the BootstrapActivity
+                    Intent registerIntent = new Intent(MainActivity.this, UserRegistrationActivity.class);
+                    // Start the BootstrapActivity
+                    startActivity(registerIntent);
+                }else {
+                    // Create an intent to navigate to the BootstrapActivity
+                    Intent homeIntent = new Intent(MainActivity.this, BootstrapActivity.class);
+                    // Start the BootstrapActivity
+                    startActivity(homeIntent);
+                }
             }
         });
     }

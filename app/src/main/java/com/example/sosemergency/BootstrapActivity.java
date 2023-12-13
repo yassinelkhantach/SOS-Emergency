@@ -5,12 +5,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.sosemergency.entities.Contact;
-import com.example.sosemergency.utils.ContactPersistenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.customview.widget.Openable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -48,10 +47,20 @@ public class BootstrapActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        // Navigate back to the home page and then to main activity.
-        getOnBackPressedDispatcher().onBackPressed();
-        return true;
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_report);
+
+        // Check if the current destination is the Home fragment
+        if (navController.getCurrentDestination().getId() == R.id.navigation_home) {
+            // Do nothing or handle as needed when in the Home fragment
+            // For example, you may want to show a message or perform a specific action
+            // Override this block with your desired behavior.
+            return true;
+        } else {
+            // Navigate up or handle the Up button press normally
+            return NavigationUI.navigateUp(navController, (Openable) null);
+        }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -25,7 +25,9 @@ import java.util.List;
  *   - getAllergy: Retrieves a single allergy from the database.
  *              Returns a Allergy object.
  *
- *   - deleteAllergy: Deletes all allergies from the database.
+ *   - deleteAllergies: Deletes all allergies from the database.
+ *
+ *   - deleteAllergy: Delete one allergy from the database.
  *
  * Note: Unlike getAllContacts in the ContactLoader interface, getAllergy here
  *       returns a single Allergy object instead of a List. This assumes that
@@ -66,6 +68,12 @@ public interface AllergyLoader {
      */
     @Query("DELETE FROM allergies")
     void deleteAllergies();
+
+    /*
+     * Delete selected allergy from the database.
+     */
+    @Query("DELETE FROM allergies WHERE name= :allergieName")
+    void deleteAllergy(String allergieName);
 }
 
 

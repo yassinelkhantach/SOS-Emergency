@@ -100,4 +100,15 @@ public class AllergyPersistenceManager {
             }
         });
     }
+
+    // Delete selected allergy from the Room database
+    public static void deleteAllergy(Allergy allergy) {
+        ThreadPoolManager.execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.allergyLoader().deleteAllergy(allergy.getName());
+                Log.i("deleteAllergy",allergy.getName()+ " deleted successfully !");
+            }
+        });
+    }
 }
