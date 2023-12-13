@@ -69,7 +69,7 @@ public class ContactRegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Check if the user has already picked four contacts
-                if (contactList.size() < 4) {
+                if (contactList.size() <= R.integer.max_contacts_allowed) {
                     // Start the contact picking intent
                     Intent in = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                     startActivityForResult(in, RESULT_PICK_CONTACT);
