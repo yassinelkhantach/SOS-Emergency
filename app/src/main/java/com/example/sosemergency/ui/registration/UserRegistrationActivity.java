@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -48,10 +50,14 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
     // Request code for starting ContactRegistrationActivity
     private static final int REQUEST_CONTACT_REGISTRATION = 2;
+
+    private GestureDetector gestureDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
+        gestureDetector = new GestureDetector(this, new SwipeGestureListener());
+
 
         // Initialize UI elements
         fullName = findViewById(R.id.registrationFullName);
@@ -104,6 +110,46 @@ public class UserRegistrationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
+
+    private class SwipeGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            float diffX = e2.getX() - e1.getX();
+            float diffY = e2.getY() - e1.getY();
+
+            if (Math.abs(diffX) > Math.abs(diffY)
+                    && Math.abs(diffX) > SWIPE_THRESHOLD
+                    && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                // Right swipe detected
+
+                // Check if all required fields are filled
+                if (isFieldsFilled()) {
+                    // All fields are filled, proceed to ContactRegistrationActivity
+                    Intent intent = new Intent(UserRegistrationActivity.this, ContactRegistrationActivity.class);
+
+                    // Pass user data to ContactRegistrationActivity
+                    intent.putExtra("FULL_NAME", fullName.getText().toString());
+                    intent.putExtra("DOB", dateOfBirth.getText().toString());
+                    intent.putExtra("COUNTRY", country.getText().toString());
+
+                    startActivityForResult(intent, REQUEST_CONTACT_REGISTRATION);
+                    return true;
+                } else {
+                    // Display a message if fields are not filled
+                    Toast.makeText(UserRegistrationActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+    }
     /**
      * Helper method to check if all required fields are filled.
      *
