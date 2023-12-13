@@ -566,7 +566,7 @@
                         android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:src="@drawable/profile_yellow_apple" />
+                        android:src="@drawable/profile_orange_orange" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -609,7 +609,7 @@
                         android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:src="@drawable/profile_green_grape" />
+                        android:src="@drawable/profile_yellow_banana" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -652,7 +652,7 @@
                         android:layout_height="@dimen/icon_size"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:src="@drawable/profile_pink_strawberry" />
+                        android:src="@drawable/profile_bleu_fish" />
 
                     <TextView
                         android:layout_width="wrap_content"
