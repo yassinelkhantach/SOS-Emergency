@@ -97,31 +97,33 @@ public class UserRegistrationActivity extends AppCompatActivity {
         dotIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // Check if all required fields are filled
-                if (isFieldsFilled()) {
-                    //Save User Registration
-                    User user = new User(fullName.getText().toString(), DateConverterUtil.parseDate(dateOfBirth.getText().toString()),country.getText().toString());
-                    UserPersistenceManager.registerUser(user);
-
-                    // All fields are filled, proceed to ContactRegistrationActivity
-                    Intent intent = new Intent(UserRegistrationActivity.this, ContactRegistrationActivity.class);
-
-                    // Pass user data to ContactRegistrationActivity
-                    intent.putExtra("FULL_NAME", fullName.getText().toString());
-                    intent.putExtra("DOB", dateOfBirth.getText().toString());
-                    intent.putExtra("COUNTRY", country.getText().toString());
-
-                    startActivityForResult(intent, REQUEST_CONTACT_REGISTRATION);
-
-                } else {
-                    // Display a message for performing some action if fields are not filled
-                    Toast.makeText(UserRegistrationActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                }
+                registerUser();
             }
         });
     }
 
+    private void registerUser(){
+        // Check if all required fields are filled
+        if (isFieldsFilled()) {
+            //Save User Registration
+            User user = new User(fullName.getText().toString(), DateConverterUtil.parseDate(dateOfBirth.getText().toString()),country.getText().toString());
+            UserPersistenceManager.registerUser(user);
+
+            // All fields are filled, proceed to ContactRegistrationActivity
+            Intent intent = new Intent(UserRegistrationActivity.this, ContactRegistrationActivity.class);
+
+            // Pass user data to ContactRegistrationActivity
+            intent.putExtra("FULL_NAME", fullName.getText().toString());
+            intent.putExtra("DOB", dateOfBirth.getText().toString());
+            intent.putExtra("COUNTRY", country.getText().toString());
+
+            startActivityForResult(intent, REQUEST_CONTACT_REGISTRATION);
+
+        } else {
+            // Display a message for performing some action if fields are not filled
+            Toast.makeText(UserRegistrationActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
@@ -141,22 +143,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                     && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                 // Right swipe detected
 
-                // Check if all required fields are filled
-                if (isFieldsFilled()) {
-                    // All fields are filled, proceed to ContactRegistrationActivity
-                    Intent intent = new Intent(UserRegistrationActivity.this, ContactRegistrationActivity.class);
-
-                    // Pass user data to ContactRegistrationActivity
-                    intent.putExtra("FULL_NAME", fullName.getText().toString());
-                    intent.putExtra("DOB", dateOfBirth.getText().toString());
-                    intent.putExtra("COUNTRY", country.getText().toString());
-
-                    startActivityForResult(intent, REQUEST_CONTACT_REGISTRATION);
-                    return true;
-                } else {
-                    // Display a message if fields are not filled
-                    Toast.makeText(UserRegistrationActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                }
+                registerUser();
             }
 
             return super.onFling(e1, e2, velocityX, velocityY);
