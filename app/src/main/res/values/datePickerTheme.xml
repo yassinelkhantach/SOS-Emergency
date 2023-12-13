@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DatePickerTheme" parent="@android:style/Theme.Holo.Light.Dialog.MinWidth">
-        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
-        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    <style name="DatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/primary</item>
     </style>
 
 </resources>
