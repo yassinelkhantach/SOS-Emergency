@@ -7,16 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Add ImageView for the app logo -->
-    <ImageView
-        android:id="@+id/app_logo"
+    <!-- Add a FrameLayout to overlay the circle ImageView -->
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- ImageView for the circle -->
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

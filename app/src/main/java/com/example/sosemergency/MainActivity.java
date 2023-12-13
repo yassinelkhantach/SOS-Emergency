@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.example.sosemergency.ui.registration.UserRegistrationActivity;
@@ -18,14 +20,14 @@ import com.example.sosemergency.utils.UserPersistenceManager;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView appLogo;
+    private ImageView circle; // Circle ImageView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        appLogo = findViewById(R.id.app_logo); // Assuming you have an ImageView for the app logo
+        circle = findViewById(R.id.app_logo); // Replace with the ID of your circle ImageView
 
         // Initialize the Room database for user information
         UserPersistenceManager.initAppDatabase(getApplicationContext());
@@ -34,20 +36,29 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the Room database for allergy information
         AllergyPersistenceManager.initAppDatabase(getApplicationContext());
 
-        // Display the logo for 1 second
-        displayLogoAndRedirect();
+        // Display the logo and animation for 1 second before redirecting
+        displayLogoAndAnimation();
     }
 
-    /**
-     * Display the logo for 2 or 3 seconds before redirecting.
-     */
-    private void displayLogoAndRedirect() {
-        appLogo.setVisibility(View.VISIBLE);
+    private void displayLogoAndAnimation() {
+        circle.setVisibility(View.VISIBLE);
+
+        // Create a RotateAnimation for the circle
+        RotateAnimation rotateAnimation = new RotateAnimation(0, 360,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration(1000); // 1 second duration
+        rotateAnimation.setRepeatCount(Animation.INFINITE); // Infinite rotation
+
+        // Start the animation
+        circle.startAnimation(rotateAnimation);
 
         // Use a Handler to delay the redirection
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                // Stop the animation
+                circle.clearAnimation();
                 // Check if the user is already registered
                 if (UserPersistenceManager.exists()) {
                     // If registered, redirect to BootstrapActivity
@@ -57,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     redirectToRegistrationPage();
                 }
             }
-        }, 1000); // 2000 milliseconds (2 seconds) delay
+        }, 1000); // 1000 milliseconds (1 second) delay
     }
 
     /**
