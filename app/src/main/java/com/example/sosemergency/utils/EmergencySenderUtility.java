@@ -139,7 +139,7 @@ public class EmergencySenderUtility {
         StringBuilder smsMessageBuilder = new StringBuilder(emergencySmsTemplate);
 
         if (emergencyType != null) {
-            smsMessageBuilder.append("\n").append(String.format(locationSmsTemplate, emergencyType));
+            smsMessageBuilder.append("\n").append(String.format(typeSmsTemplate, emergencyType));
         }
 
         if (currentLatLng != null) {
