@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sosemergency.BootstrapActivity;
 import com.example.sosemergency.MainActivity;
 import com.example.sosemergency.R;
+import com.example.sosemergency.entities.Contact;
 import com.example.sosemergency.ui.contact.ContactModel;
+import com.example.sosemergency.utils.ContactPersistenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +146,9 @@ public class ContactRegistrationActivity extends AppCompatActivity {
                     // Add the picked contact to the list
                     contactList.add(contact);
 
+                    // Save the picked contact to the database using ContactPersistenceManager
+                    saveContactToDatabase(contact);
+
                     // Notify the adapter of the data set change
                     contactAdapter.notifyItemInserted(contactList.size() - 1);
                 } else {
@@ -161,6 +166,15 @@ public class ContactRegistrationActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
+    }
+
+    // Method to save a single contact to the database using ContactPersistenceManager
+    private void saveContactToDatabase(ContactModel contactModel) {
+        // Create a Contact instance from the ContactModel
+        Contact contact = new Contact(contactModel.getName(), contactModel.getPhone());
+
+        // Use ContactPersistenceManager to add the contact to the database
+        ContactPersistenceManager.addContact(contact);
     }
 
     // Update visibility of icons based on the number of selected contacts
